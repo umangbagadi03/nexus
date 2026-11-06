@@ -1,0 +1,266 @@
+{
+  "workspace": "gitlab-handbook",
+  "pipeline": "agentic",
+  "mode": "full",
+  "model": "Gemini (gemini-3.1-flash-lite)",
+  "created_at": "2026-11-06_03-04-20",
+  "summary": {
+    "questions": 12,
+    "recall": 0.9583333333333334,
+    "accuracy": 0.5833333333333334,
+    "coverage": 0.7718253968253967,
+    "single_hop_accuracy": 0.7,
+    "multi_hop_accuracy": 0.0,
+    "average_seconds": 27.882499999999997
+  },
+  "results": [
+    {
+      "id": "g01",
+      "question": "How much can I get from the Growth and Development Fund each year, and how do I apply?",
+      "type": "single_hop",
+      "recall": 1.0,
+      "correct": false,
+      "coverage": 0.25,
+      "judge_reason": "The answer correctly identifies the funding limit and the submission platform, but fails to mention the eligibility requirements and the mandatory manager approval process.",
+      "seconds": 9.46,
+      "steps": 5,
+      "check": {
+        "status": "passed",
+        "unsupported": []
+      },
+      "answer": "You can be reimbursed for up to $10,000 per calendar year from the Growth and Development (G&D) Fund [1].\n\nTo apply, you must submit your request through **Compass** [1]. If you already have an existing GitLab issue for a G&D request that is in progress or moving through approval, you do not need to resubmit it; those requests will continue under the prior process [1].",
+      "retrieved": [
+        "https://handbook.gitlab.com/handbook/people-group/learning-and-development/growth-and-development"
+      ]
+    },
+    {
+      "id": "g02",
+      "question": "If someone is the DRI for a project, do they have to justify their decisions to everyone?",
+      "type": "single_hop",
+      "recall": 1.0,
+      "correct": true,
+      "coverage": 1.0,
+      "judge_reason": "The answer accurately captures all core facts from the reference and provides additional context that aligns with the policy.",
+      "seconds": 5.53,
+      "steps": 5,
+      "check": {
+        "status": "passed",
+        "unsupported": []
+      },
+      "answer": "No, a Directly Responsible Individual (DRI) does not owe explanations for their decisions [1]. They are not required to convince others or justify their choices, as this helps avoid analysis paralysis and endless explanation cycles [1].\n\nHowever, while they have the final say, they are expected to:\n* Consult with relevant teams and stakeholders [1].\n* Gather context, input, and feedback before making decisions [1].\n* Leverage the expertise and judgment of their team and peers [1].",
+      "retrieved": [
+        "https://handbook.gitlab.com/handbook/people-group/directly-responsible-individuals",
+        "https://handbook.gitlab.com/handbook/communication"
+      ]
+    },
+    {
+      "id": "g03",
+      "question": "Our incident tool incident.io is down in the middle of an outage. What do we do?",
+      "type": "single_hop",
+      "recall": 1.0,
+      "correct": true,
+      "coverage": 1.0,
+      "judge_reason": "The answer covers all core facts from the reference and provides helpful additional context for post-restoration steps.",
+      "seconds": 5.24,
+      "steps": 5,
+      "check": {
+        "status": "passed",
+        "unsupported": []
+      },
+      "answer": "If incident.io is down during an outage, follow these procedures to maintain continuity:\n\n**Immediate Actions**\n*   **Centralize Communication**: Create a dedicated Slack channel (e.g., `#incident-io-outage` or `#incident-[date]`) to serve as the single source of truth and invite all relevant stakeholders [1].\n*   **Create a Google Doc**: Use the [provided template](https://docs.google.com/document/d/1tFcU5tIpUin_3O50QpEMrhB_KA1vU-PgnI1fRT-xlBE/edit?usp=sharing) to track the incident timeline, action items, status updates, and resolution steps [1].\n*   **Share Access**: Ensure the Google Doc is accessible to everyone within GitLab [1].\n\n**If the issue is due to Cloudflare or Okta authentication:**\n*   Contact an incident.io admin (via `#g_networking_and_incident_management` or infrastructure leadership) to temporarily grant \"Bypass SAML Login\" permissions to the Standard role in the [incident.io settings](https://app.incident.io/gitlab/settings/permissions/account) [1].\n\n**Once incident.io is restored:**\n*   Create a \"Retrospective incident\" via the [incident.io dashboard](https://app.incident.io/gitlab/dashboard) [1].\n*   Migrate critical information from the Google Doc into incident.io [1].\n*   Close or archive the temporary Slack channel [1].\n*   Document lessons learned [1].",
+      "retrieved": [
+        "https://handbook.gitlab.com/handbook/engineering/infrastructure-platforms/incident-management/incident-io-down"
+      ]
+    },
+    {
+      "id": "g04",
+      "question": "Who should I go to if I witness harassment at work?",
+      "type": "single_hop",
+      "recall": 1.0,
+      "correct": true,
+      "coverage": 0.5,
+      "judge_reason": "The answer provides all the core reporting channels but omits the scope of the policy, which is a supporting detail not strictly required to answer 'who' to go to.",
+      "seconds": 7.58,
+      "steps": 5,
+      "check": {
+        "status": "passed",
+        "unsupported": []
+      },
+      "answer": "If you witness harassment, you should report the incident immediately to one of the following [1]:\n\n*   The Chief People Officer\n*   Team Member Relations\n*   A People Business Partner",
+      "retrieved": [
+        "https://handbook.gitlab.com/handbook/people-group/anti-harassment"
+      ]
+    },
+    {
+      "id": "g05",
+      "question": "Someone threatened my physical safety because of a merge request. What steps should I take?",
+      "type": "single_hop",
+      "recall": 1.0,
+      "correct": true,
+      "coverage": 1.0,
+      "judge_reason": "The answer covers all core facts and supporting details accurately without any contradictions.",
+      "seconds": 47.31,
+      "steps": 5,
+      "check": {
+        "status": "passed",
+        "unsupported": []
+      },
+      "answer": "If you are threatened due to a merge request, take the following steps:\n\n1. **Contact local law enforcement:** Determine the appropriate emergency or non-emergency number for your locality and contact them [1].\n2. **Notify People Operations:** Submit a Compass request to the People Operations Team [1]. This may result in the creation of a private Slack channel involving your People Business Partner, People Operations, Team Member Relations, your manager, and the security team [1].\n\nDepending on the nature of the threat, the company may take further actions, such as conducting an internal threat assessment, providing temporary accommodations, arranging transportation, granting time off, or providing a personal security detail [1]. While normal permission workflows are preferred, immediate action may be taken if a threat is credible and imminent [1].",
+      "retrieved": [
+        "https://handbook.gitlab.com/handbook/people-group/anti-harassment"
+      ]
+    },
+    {
+      "id": "g06",
+      "question": "I'm an onboarding buddy for a new hire starting Monday. What should I do first?",
+      "type": "single_hop",
+      "recall": 1.0,
+      "correct": true,
+      "coverage": 0.75,
+      "judge_reason": "The answer covers all core instructions provided in the reference, though it omits the secondary task of checking the onboarding issue progress.",
+      "seconds": 12.91,
+      "steps": 5,
+      "check": {
+        "status": "passed",
+        "unsupported": []
+      },
+      "answer": "The first and most important thing you should do as an onboarding buddy is schedule a call with the new team member [1]. \n\nTo do this:\n* Ask the new hire's manager for their personal email address in the days leading up to their start date [1].\n* Introduce yourself and ask for a good time to schedule an initial coffee chat [1].\n* Consider scheduling the call towards the end of their first day so they have time to digest their onboarding issue and prepare questions [1].",
+      "retrieved": [
+        "https://handbook.gitlab.com/handbook/people-group/general-onboarding/onboarding-buddies"
+      ]
+    },
+    {
+      "id": "g07",
+      "question": "How many vacation days do I get at GitLab?",
+      "type": "single_hop",
+      "recall": 1.0,
+      "correct": true,
+      "coverage": 1.0,
+      "judge_reason": "The answer provides a more comprehensive and accurate explanation of the policy by acknowledging that while the general policy is flexible, specific legal entities have mandatory statutory requirements.",
+      "seconds": 187.39,
+      "steps": 13,
+      "check": {
+        "status": "passed",
+        "unsupported": []
+      },
+      "answer": "The number of vacation days you receive depends on your employment location and entity:\n\n*   **General Flexible PTO Policy:** For many team members, GitLab offers a Flexible PTO policy with no set annual limit [2]. You are encouraged to take at least 25 days per year [2].\n*   **GitLab Canada Corp:** Statutory minimums apply based on your province and tenure (ranging from 2 to 4 weeks) [3].\n*   **GitLab Singapore Pte Ltd:** Annual leave is based on tenure, starting at 7 days per year after 1 year of service and increasing to 14 days per year after 8 years of service [5].\n*   **GitLab France S.A.S.:** Entitlement is based on French labor law (statutory vacation days) plus additional RTT (Reduction of Working Time) days [4].\n\nBecause benefits vary by location, you should check your specific entity's page in the [General & Entity Specific Benefits & Information handbook section](https://handbook.gitlab.com/handbook/total-rewards/benefits/general-and-entity-benefits/) for details relevant to you [1]. If you have further questions, you can contact the team via [Compass](https://app.serval.com/new-request) [1].",
+      "retrieved": [
+        "https://handbook.gitlab.com/handbook/total-rewards/benefits/general-and-entity-benefits",
+        "https://handbook.gitlab.com/handbook/people-group/time-off-and-absence/time-off-types",
+        "https://handbook.gitlab.com/handbook/total-rewards/benefits/general-and-entity-benefits/canada-corp-benefits",
+        "https://handbook.gitlab.com/handbook/total-rewards/benefits/general-and-entity-benefits/france-sas",
+        "https://handbook.gitlab.com/handbook/total-rewards/benefits/general-and-entity-benefits/singapore-pte-ltd"
+      ]
+    },
+    {
+      "id": "g08",
+      "question": "As incident lead, how do I post status updates and what should they contain?",
+      "type": "single_hop",
+      "recall": 1.0,
+      "correct": false,
+      "coverage": 0.6666666666666666,
+      "judge_reason": "The answer correctly identifies the command and content requirements for updates but omits the incident lead's responsibilities regarding field management and data classification.",
+      "seconds": 13.7,
+      "steps": 4,
+      "check": {
+        "status": "passed",
+        "unsupported": []
+      },
+      "answer": "As an Incident Lead, you should post regular status updates using the `/incident update` command in the incident Slack channel [1].\n\nThese updates must contain:\n*   A summary of the current customer impact [1].\n*   The actions being taken to mitigate the incident [1].\n\nThese updates are the most important part of the incident timeline and should be written so they can be understood by the wider community, as they are used to inform status page updates [1].",
+      "retrieved": [
+        "https://handbook.gitlab.com/handbook/engineering/infrastructure-platforms/incident-management/roles/incident-lead"
+      ]
+    },
+    {
+      "id": "g09",
+      "question": "Can I share company information publicly by default, or is it confidential?",
+      "type": "single_hop",
+      "recall": 1.0,
+      "correct": true,
+      "coverage": 1.0,
+      "judge_reason": "The answer covers all core facts from the reference and provides helpful additional context without contradicting the original information.",
+      "seconds": 7.46,
+      "steps": 5,
+      "check": {
+        "status": "flagged",
+        "unsupported": [
+          {
+            "claim": "material nonpublic information",
+            "reason": "Source [1] does not list 'material nonpublic information' as an example of internal information. While source [2] mentions it as an example of a 'Potentially GitLab Sensitive Topic', it does not explicitly categorize it as 'internal' or 'not public' in the same way source [1] does for the other items listed."
+          }
+        ]
+      },
+      "answer": "At GitLab, the default is to be **public** [1][2]. However, certain information is classified as **internal** or **limited access** and must not be shared publicly [1][2].\n\nIf information is not explicitly listed as internal or limited access, you should refer to the Security team's [Data Classification Standard](/handbook/security/policies_and_standards/data-classification-standard/) and Legal's [SAFE Framework](/handbook/legal/safe-framework/) for guidance [1].\n\n**Examples of information that is internal (not public) include:**\n*   **Security:** Security and abuse vulnerabilities (until remediated) and implementations that detect malicious activity [1].\n*   **Financials:** Revenue, costs, specific IACV, monthly cash flow, department costs, team member retention, sales pipeline, and retention KPIs [1].\n*   **Legal/Contracts:** Legal discussions (Attorney-Client Privilege) and contracts with external parties [1].\n*   **Personal Data:** Information that compromises the personal data of team members, customers, or users [1].\n*   **Planning:** Competitive sales and marketing campaign planning [1].\n*   **Safety/Privacy:** Information that could compromise a team member's physical safety or discussions regarding country of residence [1].\n*   **Other:** Press embargoes, copyrighted IP, and material nonpublic information [1][2].\n\nIf content is intended only for GitLab team members but would otherwise be in the public handbook, it should be added to the **Internal Handbook** [1]. Additionally, you must not disclose confidential or proprietary information about the business, suppliers, or customers on social media [3].",
+      "retrieved": [
+        "https://handbook.gitlab.com/handbook/communication/confidentiality-levels",
+        "https://handbook.gitlab.com/handbook/communication",
+        "https://handbook.gitlab.com/handbook/people-group/acceptable-use-policy"
+      ]
+    },
+    {
+      "id": "g10",
+      "question": "When should I use Slack, an issue or a document for communication?",
+      "type": "single_hop",
+      "recall": 1.0,
+      "correct": false,
+      "coverage": 0.5714285714285714,
+      "judge_reason": "The answer covers the primary communication channels correctly but misses the specific procedural advice regarding context, deadlines, and closing the loop.",
+      "seconds": 5.22,
+      "steps": 5,
+      "check": {
+        "status": "passed",
+        "unsupported": []
+      },
+      "answer": "Based on the GitLab Handbook, you should choose your communication channel based on the nature and longevity of the information:\n\n*   **Slack:** Use for ephemeral coordination, informal communication, company newsletters, team updates, and asynchronous standups [1][2]. Because Slack activity is only retained for 90 days, it should **not** be used for obtaining approvals, documenting decisions, storing official records, or sharing sensitive information [1].\n*   **GitLab Issues:** Use for work that has a lifecycle, collaboration, and actions that need to be tracked [1][2]. Discussion in issues is preferred over other channels [1]. If you need a response, link to the issue in Slack to move the conversation there [1].\n*   **Documents:** Use for content that requires a narrative, such as proposals or memos [2].\n\n**General Guidelines:**\n*   **Default to Async:** Use issues, documents, or threads for status updates, FYIs, and decisions, as these are searchable and provide clear context [2].\n*   **Bias for Action:** Move conversations that require collaboration or action out of Slack and into an issue [1].\n*   **Transparency:** All company data should be shareable by default; avoid private groups in Slack [1].",
+      "retrieved": [
+        "https://handbook.gitlab.com/handbook/communication",
+        "https://handbook.gitlab.com/handbook/communication/sync-vs-async-culture"
+      ]
+    },
+    {
+      "id": "g11",
+      "question": "What is GitLab's PTO policy and why does the company want people to take time off?",
+      "type": "multi_hop",
+      "recall": 1.0,
+      "correct": false,
+      "coverage": 0.8571428571428571,
+      "judge_reason": "The answer covers all core aspects of the policy and philosophy, though it omits the specific detail about managers modeling time off.",
+      "seconds": 26.34,
+      "steps": 5,
+      "check": {
+        "status": "passed",
+        "unsupported": []
+      },
+      "answer": "GitLab's PTO policy and philosophy are as follows:\n\n### Flexible PTO Policy\n*   **Policy:** GitLab offers a Flexible PTO policy with no specific annual limit, provided you coordinate with your manager and establish a coverage plan [1].\n*   **Requirements:** \n    *   Time off exceeding 25 consecutive calendar days requires special permission from your Manager, People Business Partner, and the Absence Management Team [1].\n    *   PTO cannot be substituted for sick time [1].\n*   **Recommendations:** The company strongly recommends taking at least 25 days of time off per year, including at least two consecutive weeks [1].\n\n### Why Time Away Matters\nGitLab encourages time off to support sustainable, results-focused performance [2]. Key reasons include:\n*   Maintaining mental health and preventing burnout [2].\n*   Refreshing creativity and problem-solving abilities [2].\n*   Strengthening personal and family relationships [2].\n*   Gaining new perspectives that enhance work contributions [2].",
+      "retrieved": [
+        "https://handbook.gitlab.com/handbook/people-group/time-off-and-absence/time-off-types",
+        "https://handbook.gitlab.com/handbook/people-group/time-off-and-absence/time-away-philosophy"
+      ]
+    },
+    {
+      "id": "g12",
+      "question": "After an incident is resolved, what happens to the action items, and who is responsible for them?",
+      "type": "multi_hop",
+      "recall": 0.5,
+      "correct": false,
+      "coverage": 0.6666666666666666,
+      "judge_reason": "The answer incorrectly generalizes the application of the 'infradev' label to all corrective actions instead of only those affecting SaaS availability.",
+      "seconds": 6.45,
+      "steps": 5,
+      "check": {
+        "status": "flagged",
+        "unsupported": [
+          {
+            "claim": "they automatically receive the `~\"corrective action\"` label",
+            "reason": "Source [1] states that all incident follow-up issues receive this label automatically, but source [2] states that only issues arising out of an incident should receive the label, implying it is a manual application process rather than an automatic one."
+          }
+        ]
+      },
+      "answer": "After an incident is resolved, action items (referred to as **Corrective Actions** or **Follow Up Items**) are managed as follows:\n\n### Process for Action Items\n*   **Documentation**: Items are identified and documented during the incident, and they automatically receive the `~\"corrective action\"` label [1][2].\n*   **Triage**: Issues with the `~\"corrective action\"` label automatically receive the `~\"infradev\"` label to ensure they are resolved within specific time-frames [2].\n*   **Location**: \n    *   For the GitLab.com team, items are initially triaged in `gitlab-com/gl-infra/production-engineering` [1].\n    *   For the Dedicated team, items are kept in the private project `gitlab-com/gl-infra/dedicated-follow-ups` [1].\n*   **Template**: Corrective Actions in the Production Engineering project should use the [Corrective Action issue template](https://gitlab.com/gitlab-com/gl-infra/reliability/-/blob/master/.gitlab/issue_templates/incident-corrective-action.md) [2].\n\n### Responsibilities\nThe **Incident Lead** is responsible for the following after the incident:\n*   Reviewing all automatically created follow-up issues within one business day [1].\n*   Verifying that each issue contains appropriate context from the incident [1].\n*   Moving issues to the correct project for the team responsible for addressing them [1].\n*   Applying necessary labels (such as team and group labels) [1].\n*   Assigning the issue to the appropriate team member or manager for triage [1].",
+      "retrieved": [
+        "https://handbook.gitlab.com/handbook/engineering/infrastructure-platforms/incident-management/incident-follow-ups",
+        "https://handbook.gitlab.com/handbook/engineering/infrastructure-platforms/incident-management"
+      ]
+    }
+  ]
+}

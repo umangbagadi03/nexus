@@ -1,0 +1,157 @@
+{
+  "workspace": "gitlab-handbook",
+  "pipeline": "hybrid",
+  "mode": "retrieval",
+  "model": "",
+  "created_at": "2026-11-04_01-30-50",
+  "summary": {
+    "questions": 12,
+    "recall": 0.875
+  },
+  "results": [
+    {
+      "id": "g01",
+      "question": "How much can I get from the Growth and Development Fund each year, and how do I apply?",
+      "type": "single_hop",
+      "recall": 1.0,
+      "retrieved": [
+        "https://handbook.gitlab.com/handbook/people-group/learning-and-development/growth-and-development",
+        "https://handbook.gitlab.com/handbook/total-rewards/benefits/general-and-entity-benefits",
+        "https://handbook.gitlab.com/handbook/people-group/learning-and-development/career-development",
+        "https://handbook.gitlab.com/handbook/people-group/learning-and-development/career-development/igp-guide"
+      ]
+    },
+    {
+      "id": "g02",
+      "question": "If someone is the DRI for a project, do they have to justify their decisions to everyone?",
+      "type": "single_hop",
+      "recall": 1.0,
+      "retrieved": [
+        "https://handbook.gitlab.com/handbook/people-group/directly-responsible-individuals",
+        "https://handbook.gitlab.com/handbook/communication",
+        "https://handbook.gitlab.com/handbook/people-group/employment-branding/people-communications",
+        "https://handbook.gitlab.com/handbook/communication/confidentiality-levels"
+      ]
+    },
+    {
+      "id": "g03",
+      "question": "Our incident tool incident.io is down in the middle of an outage. What do we do?",
+      "type": "single_hop",
+      "recall": 1.0,
+      "retrieved": [
+        "https://handbook.gitlab.com/handbook/engineering/infrastructure-platforms/incident-management/incident-io-down",
+        "https://handbook.gitlab.com/handbook/engineering/infrastructure-platforms/incident-management/on-call",
+        "https://handbook.gitlab.com/handbook/engineering/infrastructure-platforms/incident-management",
+        "https://handbook.gitlab.com/handbook/engineering/infrastructure-platforms/incident-management/roles/incident-responder"
+      ]
+    },
+    {
+      "id": "g04",
+      "question": "Who should I go to if I witness harassment at work?",
+      "type": "single_hop",
+      "recall": 1.0,
+      "retrieved": [
+        "https://handbook.gitlab.com/handbook/people-group/anti-harassment",
+        "https://handbook.gitlab.com/handbook/people-group/team-member-relations",
+        "https://handbook.gitlab.com/handbook/people-group/time-off-and-absence/time-off-types"
+      ]
+    },
+    {
+      "id": "g05",
+      "question": "Someone threatened my physical safety because of a merge request. What steps should I take?",
+      "type": "single_hop",
+      "recall": 1.0,
+      "retrieved": [
+        "https://handbook.gitlab.com/handbook/people-group/anti-harassment",
+        "https://handbook.gitlab.com/handbook/communication",
+        "https://handbook.gitlab.com/handbook/people-group/employment-branding/people-communications",
+        "https://handbook.gitlab.com/handbook/people-group/general-onboarding/mr-buddies"
+      ]
+    },
+    {
+      "id": "g06",
+      "question": "I'm an onboarding buddy for a new hire starting Monday. What should I do first?",
+      "type": "single_hop",
+      "recall": 1.0,
+      "retrieved": [
+        "https://handbook.gitlab.com/handbook/people-group/general-onboarding/onboarding-buddies",
+        "https://handbook.gitlab.com/handbook/people-group/general-onboarding",
+        "https://handbook.gitlab.com/handbook/people-group/general-onboarding/tanewki-tips"
+      ]
+    },
+    {
+      "id": "g07",
+      "question": "How many vacation days do I get at GitLab?",
+      "type": "single_hop",
+      "recall": 0.0,
+      "retrieved": [
+        "https://handbook.gitlab.com/handbook/total-rewards/benefits/general-and-entity-benefits/bv-benefits-netherlands",
+        "https://handbook.gitlab.com/handbook/total-rewards/benefits/general-and-entity-benefits/bv-benefits-belgium",
+        "https://handbook.gitlab.com/handbook/total-rewards/benefits/general-and-entity-benefits/pty-benefits-new-zealand",
+        "https://handbook.gitlab.com/handbook/people-group/general-onboarding/tanewki-tips",
+        "https://handbook.gitlab.com/handbook/total-rewards/benefits/general-and-entity-benefits/gitlab-gk"
+      ]
+    },
+    {
+      "id": "g08",
+      "question": "As incident lead, how do I post status updates and what should they contain?",
+      "type": "single_hop",
+      "recall": 1.0,
+      "retrieved": [
+        "https://handbook.gitlab.com/handbook/engineering/infrastructure-platforms/incident-management/roles/incident-lead",
+        "https://handbook.gitlab.com/handbook/engineering/infrastructure-platforms/incident-management/roles/communications-lead",
+        "https://handbook.gitlab.com/handbook/engineering/infrastructure-platforms/incident-management/incident-follow-ups",
+        "https://handbook.gitlab.com/handbook/engineering/infrastructure-platforms/incident-management"
+      ]
+    },
+    {
+      "id": "g09",
+      "question": "Can I share company information publicly by default, or is it confidential?",
+      "type": "single_hop",
+      "recall": 1.0,
+      "retrieved": [
+        "https://handbook.gitlab.com/handbook/communication/confidentiality-levels",
+        "https://handbook.gitlab.com/handbook/communication",
+        "https://handbook.gitlab.com/handbook/people-group/acceptable-use-policy",
+        "https://handbook.gitlab.com/handbook/people-group/offboarding"
+      ]
+    },
+    {
+      "id": "g10",
+      "question": "When should I use Slack, an issue or a document for communication?",
+      "type": "single_hop",
+      "recall": 1.0,
+      "retrieved": [
+        "https://handbook.gitlab.com/handbook/people-group/acceptable-use-policy",
+        "https://handbook.gitlab.com/handbook/communication",
+        "https://handbook.gitlab.com/handbook/communication/sync-vs-async-culture",
+        "https://handbook.gitlab.com/handbook/communication/chat"
+      ]
+    },
+    {
+      "id": "g11",
+      "question": "What is GitLab's PTO policy and why does the company want people to take time off?",
+      "type": "multi_hop",
+      "recall": 0.5,
+      "retrieved": [
+        "https://handbook.gitlab.com/handbook/people-group/time-off-and-absence/time-off-types",
+        "https://handbook.gitlab.com/handbook/total-rewards/benefits/general-and-entity-benefits/canada-corp-benefits",
+        "https://handbook.gitlab.com/handbook/total-rewards/benefits/general-and-entity-benefits/france-sas",
+        "https://handbook.gitlab.com/handbook/total-rewards/benefits/general-and-entity-benefits/singapore-pte-ltd",
+        "https://handbook.gitlab.com/handbook/people-group/contracts-probation-periods"
+      ]
+    },
+    {
+      "id": "g12",
+      "question": "After an incident is resolved, what happens to the action items, and who is responsible for them?",
+      "type": "multi_hop",
+      "recall": 1.0,
+      "retrieved": [
+        "https://handbook.gitlab.com/handbook/engineering/infrastructure-platforms/incident-management/incident-follow-ups",
+        "https://handbook.gitlab.com/handbook/engineering/infrastructure-platforms/incident-management",
+        "https://handbook.gitlab.com/handbook/engineering/infrastructure-platforms/incident-management/roles/communications-lead",
+        "https://handbook.gitlab.com/handbook/engineering/infrastructure-platforms/incident-management/roles/incident-lead"
+      ]
+    }
+  ]
+}

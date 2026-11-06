@@ -1,0 +1,311 @@
+{
+  "workspace": "langgraph",
+  "pipeline": "agentic",
+  "mode": "full",
+  "model": "Gemini (gemini-3.1-flash-lite)",
+  "created_at": "2026-11-06_11-33-52",
+  "summary": {
+    "questions": 14,
+    "recall": 0.9642857142857143,
+    "accuracy": 0.7857142857142857,
+    "coverage": 0.9494047619047619,
+    "single_hop_accuracy": 0.7777777777777778,
+    "multi_hop_accuracy": 0.8,
+    "average_seconds": 17.294285714285714
+  },
+  "results": [
+    {
+      "id": "q01",
+      "question": "My graph fails with GRAPH_RECURSION_LIMIT. What causes it and how do I fix it?",
+      "type": "single_hop",
+      "recall": 1.0,
+      "correct": true,
+      "coverage": 1.0,
+      "judge_reason": "The answer correctly identifies the cause and solution, while providing additional helpful context regarding global configuration and default limits.",
+      "seconds": 30.0,
+      "steps": 5,
+      "check": {
+        "status": "passed",
+        "unsupported": []
+      },
+      "answer": "The `GRAPH_RECURSION_LIMIT` error occurs when your `StateGraph` exceeds the maximum number of allowed super-steps before reaching a stop condition [1][2].\n\n### Causes\n* **Infinite Loops:** Your graph logic may contain a cycle that prevents it from terminating [1].\n* **Complex Graphs:** Your graph may simply require more steps than the default limit to complete its execution [1].\n\n### How to Fix\n1. **Check for Infinite Loops:** If you do not expect your graph to perform many iterations, review your logic to ensure there are no unintended infinite loops [1].\n2. **Increase the Limit:** If your graph is complex and requires more steps, you can increase the limit in two ways:\n    * **Per invocation:** Pass a higher `recursion_limit` in your `config` object when invoking the graph [1][2]:\n      ```python\n      graph.invoke({...}, {\"recursion_limit\": 1000})\n      ```\n    * **Globally:** Set the `LANGGRAPH_DEFAULT_RECURSION_LIMIT` environment variable [2].\n\nThe default limit is 10,007 super-steps (as of version 1.1.4) [2].",
+      "retrieved": [
+        "https://docs.langchain.com/oss/python/langgraph/errors/GRAPH_RECURSION_LIMIT",
+        "https://docs.langchain.com/oss/python/langgraph/graph-api"
+      ]
+    },
+    {
+      "id": "q02",
+      "question": "What does the MISSING_CHECKPOINTER error mean?",
+      "type": "single_hop",
+      "recall": 1.0,
+      "correct": true,
+      "coverage": 1.0,
+      "judge_reason": "The answer accurately captures all core facts from the reference answer and provides the same instructions for resolution.",
+      "seconds": 8.57,
+      "steps": 5,
+      "check": {
+        "status": "passed",
+        "unsupported": []
+      },
+      "answer": "The `MISSING_CHECKPOINTER` error occurs when you attempt to use built-in LangGraph persistence without providing a checkpointer to the `compile()` method of a `StateGraph` or an `@entrypoint` [1].\n\nTo resolve this, you can:\n*   Initialize and pass a checkpointer (such as `InMemorySaver`) to the `compile()` method or `@entrypoint` decorator [1].\n*   Use the LangGraph API, which manages persistence infrastructure automatically [1].",
+      "retrieved": [
+        "https://docs.langchain.com/oss/python/langgraph/errors/MISSING_CHECKPOINTER"
+      ]
+    },
+    {
+      "id": "q03",
+      "question": "Two parallel nodes write to the same state key and I get INVALID_CONCURRENT_GRAPH_UPDATE. How do I solve it?",
+      "type": "single_hop",
+      "recall": 1.0,
+      "correct": true,
+      "coverage": 1.0,
+      "judge_reason": "The answer correctly identifies the cause of the error and provides the exact solution described in the reference.",
+      "seconds": 5.73,
+      "steps": 5,
+      "check": {
+        "status": "passed",
+        "unsupported": []
+      },
+      "answer": "To resolve the `INVALID_CONCURRENT_GRAPH_UPDATE` error when multiple nodes write to the same state key in parallel, you must define a **reducer** for that state key [1].\n\nA reducer allows the graph to combine multiple values instead of overwriting them. You can implement this using `Annotated` and a function like `operator.add` [1]:\n\n```python\nimport operator\nfrom typing import Annotated, TypedDict\n\nclass State(TypedDict):\n    # The operator.add reducer makes this key append-only\n    some_key: Annotated[list, operator.add]\n```\n\nBy defining the key this way, the graph will know how to handle updates from multiple nodes executed in parallel [1].",
+      "retrieved": [
+        "https://docs.langchain.com/oss/python/langgraph/errors/INVALID_CONCURRENT_GRAPH_UPDATE"
+      ]
+    },
+    {
+      "id": "q04",
+      "question": "What does InvalidUpdateError: Expected dict, got a list mean when a node returns?",
+      "type": "single_hop",
+      "recall": 1.0,
+      "correct": true,
+      "coverage": 1.0,
+      "judge_reason": "The answer correctly identifies the cause of the error and includes all core facts from the reference answer.",
+      "seconds": 6.35,
+      "steps": 4,
+      "check": {
+        "status": "passed",
+        "unsupported": []
+      },
+      "answer": "The `InvalidUpdateError: Expected dict, got [...]` error occurs when a node in a `StateGraph` returns a value that is not a dictionary [1].\n\nIn LangGraph, nodes must return a dictionary containing one or more keys defined in the graph's state [1]. If a node returns a different data type (such as a list, as shown in the example), the graph will fail during invocation [1].\n\nTo resolve this, ensure that all code paths within your node function return a dictionary that matches the structure of your defined state [1].",
+      "retrieved": [
+        "https://docs.langchain.com/oss/python/langgraph/errors/INVALID_GRAPH_NODE_RETURN_VALUE"
+      ]
+    },
+    {
+      "id": "q05",
+      "question": "What are the durability modes in LangGraph and how do they differ?",
+      "type": "single_hop",
+      "recall": 1.0,
+      "correct": false,
+      "coverage": 0.875,
+      "judge_reason": "The answer covers all core facts from the reference, though it omits the specific mention of the 'durability' argument name.",
+      "seconds": 28.06,
+      "steps": 5,
+      "check": {
+        "status": "passed",
+        "unsupported": []
+      },
+      "answer": "LangGraph supports three durability modes, which balance performance and data consistency [1]:\n\n*   **`\"exit\"`**: Persists changes only when execution ends (success, error, or interrupt). It offers the best performance but provides no recovery from system failures mid-execution [1].\n*   **`\"async\"`**: Persists changes asynchronously while the next step executes. It offers a balance of performance and durability, though there is a small risk of losing checkpoints if the process crashes during execution [1].\n*   **`\"sync\"`**: Persists changes synchronously before the next step begins. This ensures every checkpoint is written before continuing, providing the highest durability at the cost of performance overhead [1].\n\nThese modes also affect how the first checkpoint is handled for new threads:\n*   **`\"exit\"`**: No checkpoint is created until the run finishes [1].\n*   **`\"async\"`**: Starts writing the input checkpoint but does not wait for completion before the first user node executes [1].\n*   **`\"sync\"`**: Commits both the input checkpoint (step `-1`) and the step `0` checkpoint before the first user node executes [1].",
+      "retrieved": [
+        "https://docs.langchain.com/oss/python/langgraph/checkpointers"
+      ]
+    },
+    {
+      "id": "q06",
+      "question": "What is the difference between a checkpointer and a store?",
+      "type": "single_hop",
+      "recall": 1.0,
+      "correct": true,
+      "coverage": 1.0,
+      "judge_reason": "The answer accurately captures all core facts from the reference and provides additional context that does not contradict the reference.",
+      "seconds": 6.85,
+      "steps": 5,
+      "check": {
+        "status": "passed",
+        "unsupported": []
+      },
+      "answer": "The difference between a checkpointer and a store is summarized below [1]:\n\n| Feature | Checkpointer | Store |\n| :--- | :--- | :--- |\n| **Persists** | Graph state snapshots | Application-defined key-value data |\n| **Scope** | A single thread | Across threads |\n| **Memory type** | Short-term, thread-scoped | Long-term, cross-thread |\n| **Use for** | Conversation continuity, human-in-the-loop, time travel, and fault tolerance | User preferences, facts, and shared knowledge |\n| **Access pattern** | Pass a `thread_id` in graph config | Read/write items from nodes or application code |",
+      "retrieved": [
+        "https://docs.langchain.com/oss/python/langgraph/persistence"
+      ]
+    },
+    {
+      "id": "q07",
+      "question": "How do I pause a graph to ask a human for approval and then continue it?",
+      "type": "single_hop",
+      "recall": 1.0,
+      "correct": true,
+      "coverage": 1.0,
+      "judge_reason": "The answer correctly identifies the core mechanism of using interrupt() and Command(resume=value) while correctly noting the requirement for a checkpointer.",
+      "seconds": 10.76,
+      "steps": 5,
+      "check": {
+        "status": "passed",
+        "unsupported": []
+      },
+      "answer": "To pause a graph for human approval and resume execution, follow these steps:\n\n### 1. Setup Requirements\n*   **Checkpointer:** You must compile your graph with a checkpointer to persist the state [1][3].\n*   **Thread ID:** Include a thread ID in your configuration so the runtime can identify the state to resume [1][2].\n\n### 2. Pause the Graph\nUse the `interrupt()` function within a node. This pauses execution, saves the state, and returns the provided payload to the caller [1].\n\n```python\nfrom langgraph.types import interrupt\n\ndef approval_node(state: State):\n    # Pause and ask for approval\n    approved = interrupt(\"Do you approve this action?\")\n    return {\"approved\": approved}\n```\n\n### 3. Resume Execution\nWhen the graph is interrupted, you can inspect the interrupt via `stream.interrupts` [1][2]. To resume, call `stream_events(..., version=\"v3\")` using a `Command` object containing the resume value [1][2]:\n\n```python\nfrom langgraph.types import Command\n\n# Resume execution by providing the approval value\nstream = graph.stream_events(\n    Command(resume=\"approved\"), \n    config=config, \n    version=\"v3\"\n)\n```\n\nThe value passed to `Command(resume=...)` will be returned by the `interrupt()` function, allowing the node to continue [1].",
+      "retrieved": [
+        "https://docs.langchain.com/oss/python/langgraph/interrupts",
+        "https://docs.langchain.com/oss/python/langgraph/event-streaming",
+        "https://docs.langchain.com/oss/python/langgraph/checkpointers"
+      ]
+    },
+    {
+      "id": "q08",
+      "question": "I call the same subgraph several times inside one node and get MULTIPLE_SUBGRAPHS. What are my options?",
+      "type": "single_hop",
+      "recall": 1.0,
+      "correct": false,
+      "coverage": 0.75,
+      "judge_reason": "The answer provides all the core options from the reference, though it omits the explicit explanation that the error is caused by checkpointer=True.",
+      "seconds": 6.76,
+      "steps": 5,
+      "check": {
+        "status": "passed",
+        "unsupported": []
+      },
+      "answer": "If you are encountering the `MULTIPLE_SUBGRAPHS` error when calling a subgraph multiple times within a single node, you have three options depending on your persistence requirements [1]:\n\n1.  **If you do not need interrupts:** Disable checkpointing entirely by compiling the subgraph with `checkpointer=False` [1]:\n    ```python\n    subgraph = subgraph_builder.compile(checkpointer=False)\n    ```\n\n2.  **If you need interrupts but not cross-invocation persistence:** Compile the subgraph without a checkpointer (the default inherited mode) [1]:\n    ```python\n    subgraph = subgraph_builder.compile()\n    ```\n    This allows parallel execution because each invocation receives a unique namespace, though the subgraph will start fresh each time [1].\n\n3.  **If you need cross-invocation persistence:** You must ensure stable, name-based namespaces to prevent conflicts [1]. You can achieve this by wrapping each subgraph in its own `StateGraph` with a unique node name [1][2]:\n    ```python\n    # Example of wrapping for a stable namespace\n    return (\n        StateGraph(MessagesState)\n        .add_node(name, agent)  # Unique name ensures a stable namespace\n        .add_edge(\"__start__\", name)\n        .compile()\n    )\n    ```\n    Alternatively, if you add the subgraph as a node directly to your graph, it will receive a name-based namespace automatically [2].",
+      "retrieved": [
+        "https://docs.langchain.com/oss/python/langgraph/errors/MULTIPLE_SUBGRAPHS",
+        "https://docs.langchain.com/oss/python/langgraph/use-subgraphs"
+      ]
+    },
+    {
+      "id": "q09",
+      "question": "How do I keep conversation memory between calls of the same graph?",
+      "type": "single_hop",
+      "recall": 1.0,
+      "correct": true,
+      "coverage": 1.0,
+      "judge_reason": "The answer correctly identifies the core requirements of using a checkpointer and a consistent thread_id to maintain conversation memory.",
+      "seconds": 29.1,
+      "steps": 5,
+      "check": {
+        "status": "passed",
+        "unsupported": []
+      },
+      "answer": "To keep conversation memory between calls of the same graph, you should use **checkpointers** [1][3].\n\nCheckpointers provide thread-scoped, short-term memory that allows the graph to retain information from previous interactions [1][3]. When using checkpointers:\n*   **Conversation continuity**: You can send follow-up messages to the same `thread_id`, and the graph will retain the memory of previous messages [1].\n*   **Implementation**: You can add and manage conversation memory using the checkpointer system [1]. When using the Functional API, you keep the conversation on the thread and save the full list of messages for the next turn [2].\n\nIf you need to save information that persists across different threads (long-term memory), you should use **stores** instead of checkpointers [2][3]. Most applications use both: checkpointers for the current thread and stores for durable information shared across threads [3].",
+      "retrieved": [
+        "https://docs.langchain.com/oss/python/langgraph/checkpointers",
+        "https://docs.langchain.com/oss/python/langgraph/functional-api-memory",
+        "https://docs.langchain.com/oss/python/langgraph/persistence"
+      ]
+    },
+    {
+      "id": "q10",
+      "question": "Is there a known memory leak with InMemorySaver, and was anything done about it?",
+      "type": "multi_hop",
+      "recall": 1.0,
+      "correct": true,
+      "coverage": 1.0,
+      "judge_reason": "The answer accurately captures all core facts from the reference answer.",
+      "seconds": 7.44,
+      "steps": 4,
+      "check": {
+        "status": "flagged",
+        "unsupported": [
+          {
+            "claim": "Pull Request #9565 was created to add a warning about this risk to the README, but it is currently closed and was not merged",
+            "reason": "The source states the PR is closed and labeled 'Fixes #9547', but the prompt instructions state that a pull request labelled closed was not merged, and a claim that its change landed or fixed something is not supported. While the PR claims to fix the issue, the status 'closed' indicates it was not merged."
+          }
+        ]
+      },
+      "answer": "Yes, there is a known memory leak risk when using `InMemorySaver` as a checkpointer [1].\n\nRegarding actions taken:\n*   **Issue #9547** (open) tracks this issue and the need to document the risk [1].\n*   **Pull Request #9565** was created to add a warning about this risk to the README, but it is currently **closed** and was not merged [2].",
+      "retrieved": [
+        "https://github.com/langchain-ai/langgraph/issues/9547",
+        "https://github.com/langchain-ai/langgraph/pull/9565"
+      ]
+    },
+    {
+      "id": "q11",
+      "question": "Why do Enum or UUID keys in my state dict come back as strings after a checkpoint, and is there a fix?",
+      "type": "multi_hop",
+      "recall": 1.0,
+      "correct": true,
+      "coverage": 1.0,
+      "judge_reason": "The answer correctly identifies the cause, the tracking issue, and the status of the proposed fixes, while providing additional context about the serialization mechanism.",
+      "seconds": 14.85,
+      "steps": 4,
+      "check": {
+        "status": "passed",
+        "unsupported": []
+      },
+      "answer": "The issue occurs because `JsonPlusSerializer` uses `ormsgpack` with `OPT_NON_STR_KEYS`. When `ormsgpack` encounters dictionary keys that are not standard primitives (like `Enum`, `UUID`, `date`, or `datetime`), it serializes them as strings or their primitive values rather than using the custom encoding hooks that preserve their types [1][2][4].\n\nRegarding a fix:\n*   **Issue #9490** tracks this problem and is currently **open** [1].\n*   Several pull requests were submitted to address this by implementing pre-processing and post-processing pipelines to wrap and restore these keys:\n    *   **PR #9510** (closed) [2]\n    *   **PR #9548** (closed) [3]\n    *   **PR #9501** (closed) [4]\n\nBecause these pull requests were marked as **closed** and not merged, the fix has not landed in the codebase. Currently, there is no merged solution for this issue.",
+      "retrieved": [
+        "https://github.com/langchain-ai/langgraph/issues/9490",
+        "https://github.com/langchain-ai/langgraph/pull/9510",
+        "https://github.com/langchain-ai/langgraph/pull/9548",
+        "https://github.com/langchain-ai/langgraph/pull/9501"
+      ]
+    },
+    {
+      "id": "q12",
+      "question": "My cached @task never runs and default_cache_key raises a TypeError. What is going on and was it fixed?",
+      "type": "multi_hop",
+      "recall": 1.0,
+      "correct": true,
+      "coverage": 1.0,
+      "judge_reason": "The answer accurately identifies the cause of the TypeError, the impact on task execution, and the current status of the issue and pull request.",
+      "seconds": 5.27,
+      "steps": 4,
+      "check": {
+        "status": "passed",
+        "unsupported": []
+      },
+      "answer": "The issue occurs because `default_cache_key` uses `sorted()` to canonicalize mapping keys, which assumes that all keys are orderable [1][2]. If you use keys that are not comparable (such as `Enum` members or mixed types like `int` and `str`), Python raises a `TypeError`, preventing the cached `@task` from executing [1][2].\n\nRegarding the fix:\n* **Issue #9566** is currently **open** [1].\n* **Pull Request #9567**, which proposed a fix using a `pickle.dumps` fallback for unorderable keys, is **closed** and was not merged [2]. \n\nBecause the pull request was closed, the fix has not landed in the codebase [2].",
+      "retrieved": [
+        "https://github.com/langchain-ai/langgraph/issues/9566",
+        "https://github.com/langchain-ai/langgraph/pull/9567"
+      ]
+    },
+    {
+      "id": "q13",
+      "question": "With ToolNode, messages added through Command.update end up between parallel tool results and later requests fail. Is this fixed?",
+      "type": "multi_hop",
+      "recall": 1.0,
+      "correct": true,
+      "coverage": 1.0,
+      "judge_reason": "The answer correctly identifies the issue status, the relevant PR, and confirms that the issue remains unresolved.",
+      "seconds": 27.21,
+      "steps": 4,
+      "check": {
+        "status": "flagged",
+        "unsupported": [
+          {
+            "claim": "Pull Request #9560 was closed without being merged",
+            "reason": "The source [2] states the pull request is closed, but does not state it was not merged; in the context of the provided instructions, a closed pull request is defined as not merged, but the answer implies this is a conclusion drawn from the status rather than a fact stated by the source. More importantly, the claim that the bug remains open is contradicted by the source [2] which explicitly states 'Fixes #9556'."
+          },
+          {
+            "claim": "the bug described in Issue #9556 remains open",
+            "reason": "Source [2] explicitly states 'Fixes #9556', which contradicts the claim that the bug remains open."
+          }
+        ]
+      },
+      "answer": "No, this is not fixed. \n\nWhile a pull request was created to address this issue, **Pull Request #9560** was closed without being merged [2]. Consequently, the bug described in **Issue #9556** remains open [1].",
+      "retrieved": [
+        "https://github.com/langchain-ai/langgraph/issues/9556",
+        "https://github.com/langchain-ai/langgraph/pull/9560"
+      ]
+    },
+    {
+      "id": "q14",
+      "question": "The Python SDK returns a cut-off run stream when the connection closes cleanly before the run ends. Has this been fixed?",
+      "type": "multi_hop",
+      "recall": 0.5,
+      "correct": false,
+      "coverage": 0.6666666666666666,
+      "judge_reason": "The answer correctly identifies the fix via PR #9554 but omits the explanation of why the original issue occurred (the lack of reconnection on clean EOFs).",
+      "seconds": 55.17,
+      "steps": 5,
+      "check": {
+        "status": "passed",
+        "unsupported": []
+      },
+      "answer": "Yes, this has been fixed in the Python SDK version 0.4.12 [2].\n\nThe fix was implemented in pull request #9554, which is merged [1]. The SDK now handles cases where a run stream closes cleanly before the run finishes (e.g., due to a proxy timeout or server restart) by verifying the run's status before deciding whether to reconnect [1].",
+      "retrieved": [
+        "https://github.com/langchain-ai/langgraph/pull/9554",
+        "https://github.com/langchain-ai/langgraph/pull/9569"
+      ]
+    }
+  ]
+}

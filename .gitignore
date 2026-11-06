@@ -1,0 +1,13 @@
+.venv/
+__pycache__/
+*.pyc
+.env
+data/
+.DS_Store
+notes/
+.pytest_cache/
+.claude/
+evals/*/results/first-run/
+evals/*/results/strict-judge-trial/
+evals/*/results/partial-*/
+evals/*/results/unfinished_*

@@ -1,0 +1,178 @@
+{
+  "workspace": "acme-benefits",
+  "pipeline": "hybrid",
+  "mode": "full",
+  "model": "Gemini (gemini-3.1-flash-lite)",
+  "created_at": "2026-11-06_11-35-50",
+  "summary": {
+    "questions": 10,
+    "recall": 1.0,
+    "accuracy": 0.8,
+    "coverage": 0.8,
+    "single_hop_accuracy": 0.8,
+    "multi_hop_accuracy": null,
+    "average_seconds": 7.209999999999999
+  },
+  "results": [
+    {
+      "id": "a01",
+      "question": "How many annual leave days does a Senior with 4 years of service get?",
+      "type": "single_hop",
+      "recall": 1.0,
+      "correct": true,
+      "coverage": 1.0,
+      "judge_reason": "The answer correctly identifies the number of leave days specified in the reference.",
+      "seconds": 5.97,
+      "steps": 0,
+      "check": null,
+      "answer": "A Senior employee with 4 years of service receives 24 annual leave days [1].",
+      "retrieved": [
+        "/files/acme-benefits/benefits-guide-pdf/acme-benefits-guide.pdf"
+      ]
+    },
+    {
+      "id": "a02",
+      "question": "How many annual leave days does a Director with 12 years of service get?",
+      "type": "single_hop",
+      "recall": 1.0,
+      "correct": true,
+      "coverage": 1.0,
+      "judge_reason": "The answer accurately provides the specific number of leave days requested.",
+      "seconds": 7.77,
+      "steps": 0,
+      "check": null,
+      "answer": "A Director with 12 years of service receives 35 annual leave days [1].",
+      "retrieved": [
+        "/files/acme-benefits/benefits-guide-pdf/acme-benefits-guide.pdf"
+      ]
+    },
+    {
+      "id": "a03",
+      "question": "How much does Acme pay per month for the Silver plan with family coverage?",
+      "type": "single_hop",
+      "recall": 1.0,
+      "correct": true,
+      "coverage": 1.0,
+      "judge_reason": "The answer correctly identifies the monthly cost specified in the reference.",
+      "seconds": 3.17,
+      "steps": 0,
+      "check": null,
+      "answer": "Acme pays $967 per month for the Silver plan with family coverage [1].",
+      "retrieved": [
+        "/files/acme-benefits/benefits-guide-pdf/acme-benefits-guide.pdf"
+      ]
+    },
+    {
+      "id": "a04",
+      "question": "What does an employee pay per month for the Gold plan with employee + partner coverage?",
+      "type": "single_hop",
+      "recall": 1.0,
+      "correct": true,
+      "coverage": 1.0,
+      "judge_reason": "The answer correctly identifies the specific cost associated with the requested plan and coverage tier.",
+      "seconds": 2.01,
+      "steps": 0,
+      "check": null,
+      "answer": "For the Gold plan with employee + partner coverage, the employee pays $229 per month [1].",
+      "retrieved": [
+        "/files/acme-benefits/benefits-guide-pdf/acme-benefits-guide.pdf"
+      ]
+    },
+    {
+      "id": "a05",
+      "question": "What is the monthly commute allowance in London?",
+      "type": "single_hop",
+      "recall": 1.0,
+      "correct": true,
+      "coverage": 1.0,
+      "judge_reason": "The answer correctly identifies the allowance amount and location specified in the reference.",
+      "seconds": 5.28,
+      "steps": 0,
+      "check": null,
+      "answer": "The monthly commute allowance for the London office is 210 GBP [1].",
+      "retrieved": [
+        "/files/acme-benefits/benefits-guide-pdf/acme-benefits-guide.pdf"
+      ]
+    },
+    {
+      "id": "a06",
+      "question": "What is the monthly home internet allowance in Singapore?",
+      "type": "single_hop",
+      "recall": 1.0,
+      "correct": true,
+      "coverage": 1.0,
+      "judge_reason": "The answer correctly identifies the allowance amount and location specified in the reference.",
+      "seconds": 1.11,
+      "steps": 0,
+      "check": null,
+      "answer": "The monthly home internet allowance for employees in Singapore is 55 SGD [1].",
+      "retrieved": [
+        "/files/acme-benefits/benefits-guide-pdf/acme-benefits-guide.pdf"
+      ]
+    },
+    {
+      "id": "a07",
+      "question": "What relocation allowance does an L5 employee get for an international move?",
+      "type": "single_hop",
+      "recall": 1.0,
+      "correct": false,
+      "coverage": 0.0,
+      "judge_reason": "The answer fails to provide the requested information, claiming it is missing when it is actually defined in the reference.",
+      "seconds": 5.73,
+      "steps": 0,
+      "check": null,
+      "answer": "The provided sources do not contain information regarding relocation allowances for L5 employees or any specific details about relocation benefits.",
+      "retrieved": [
+        "/files/acme-benefits/benefits-guide-pdf/acme-benefits-guide.pdf"
+      ]
+    },
+    {
+      "id": "a08",
+      "question": "What happens if I leave Acme soon after a company-requested move?",
+      "type": "single_hop",
+      "recall": 1.0,
+      "correct": false,
+      "coverage": 0.0,
+      "judge_reason": "The answer incorrectly states that the information is unavailable, failing to provide the required policy detail.",
+      "seconds": 5.47,
+      "steps": 0,
+      "check": null,
+      "answer": "The provided documents do not contain information regarding what happens if you leave Acme soon after a company-requested move. The \"Acme Benefits\" guide covers leave, health cover, and office allowances, but does not address relocation repayment or exit policies [1].",
+      "retrieved": [
+        "/files/acme-benefits/benefits-guide-pdf/acme-benefits-guide.pdf"
+      ]
+    },
+    {
+      "id": "a09",
+      "question": "How much paid parental leave do caregivers get?",
+      "type": "single_hop",
+      "recall": 1.0,
+      "correct": true,
+      "coverage": 1.0,
+      "judge_reason": "The answer accurately reflects all core facts provided in the reference answer.",
+      "seconds": 9.19,
+      "steps": 0,
+      "check": null,
+      "answer": "Primary caregivers receive 22 weeks of fully paid parental leave, and secondary caregivers receive 8 weeks of fully paid leave [1].",
+      "retrieved": [
+        "/files/acme-benefits/benefits-guide-pdf/acme-benefits-guide.pdf"
+      ]
+    },
+    {
+      "id": "a10",
+      "question": "Who approves carrying over more than 5 days of annual leave?",
+      "type": "single_hop",
+      "recall": 1.0,
+      "correct": true,
+      "coverage": 1.0,
+      "judge_reason": "The answer accurately captures both the required approver and the necessity of written approval.",
+      "seconds": 26.4,
+      "steps": 0,
+      "check": null,
+      "answer": "Carrying over more than 5 days of annual leave requires written approval from your People Partner [1].",
+      "retrieved": [
+        "/files/acme-benefits/benefits-guide-pdf/acme-benefits-guide.pdf"
+      ]
+    }
+  ]
+}

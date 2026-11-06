@@ -2,6 +2,10 @@
 
 Nexus is a knowledge assistant for companies. Connect the places where knowledge lives (handbooks, docs, uploaded files, GitHub issues and pull requests, or anything a script can send) and people can ask questions in plain language. Every answer cites the documents it came from, and shows the steps the agent took to find them.
 
+![How Nexus works: from connecting a team's documents to a checked, cited answer](docs/nexus-flow.gif)
+
+*An illustration of the flow. The issue, the pull request and the page titles are real, but the question, search results and grader replies are written for the example.*
+
 Since a portfolio project has no company data of its own, it ships with three sample workspaces, two built from public data:
 
 - **GitLab Handbook.** GitLab publishes its internal company handbook. The workspace uses about 120 pages: people policies, time off, benefits, communication and incident management.

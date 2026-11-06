@@ -1,0 +1,251 @@
+/* Connected sources */
+
+.source-table {
+  margin: 0 0 40px;
+  padding: 0;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--panel);
+  list-style: none;
+}
+
+.source-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 16px;
+  align-items: start;
+  padding: 16px 18px;
+  border-bottom: 1px solid var(--line);
+}
+
+.source-facts {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 6px 22px;
+  margin: 8px 0 0 19px;
+}
+
+.source-row:last-child {
+  border-bottom: 0;
+}
+
+.source-name {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 600;
+}
+
+.source-detail {
+  margin: 2px 0 0 19px;
+  color: var(--muted);
+  font-size: 13px;
+  overflow-wrap: anywhere;
+}
+
+.source-documents {
+  color: var(--muted);
+  font-size: 13.5px;
+}
+
+.source-documents strong {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.source-status {
+  font-size: 13.5px;
+}
+
+.source-status {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 10px;
+}
+
+.status-line {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-weight: 500;
+}
+
+.status-message {
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.status-ready .status-line { color: var(--kind-docs); }
+.status-failed .status-line { color: var(--danger); }
+.status-syncing .status-line,
+.status-queued .status-line { color: var(--cobalt); }
+
+.spinner {
+  width: 12px;
+  height: 12px;
+  border: 2px solid var(--cobalt-soft);
+  border-top-color: var(--cobalt);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.source-actions {
+  display: flex;
+  gap: 6px;
+}
+
+/* Adding a source */
+
+.add-source {
+  padding: 22px 24px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--panel);
+}
+
+.add-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin: 14px 0 20px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--line);
+}
+
+.add-tabs button {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 7px 12px;
+  border: 0;
+  border-radius: 7px;
+  background: none;
+  color: var(--muted);
+  font-family: var(--sans);
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.add-tabs button svg {
+  width: 16px;
+  height: 16px;
+}
+
+.add-tabs button:hover {
+  color: var(--ink);
+}
+
+.add-tabs button.active {
+  background: var(--cobalt-soft);
+  color: var(--cobalt-dark);
+}
+
+.add-form {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px 18px;
+  max-width: 720px;
+}
+
+.add-form .wide {
+  grid-column: 1 / -1;
+}
+
+.add-form-actions {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.form-message {
+  color: var(--muted);
+  font-size: 13.5px;
+}
+
+.form-message.error {
+  color: var(--danger);
+}
+
+.drop-zone {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 34px 20px;
+  border: 1.5px dashed var(--line);
+  border-radius: 8px;
+  color: var(--muted);
+  text-align: center;
+  cursor: pointer;
+}
+
+.drop-zone svg {
+  width: 26px;
+  height: 26px;
+  color: var(--kind-file);
+}
+
+.drop-zone strong {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.drop-zone.dragging {
+  border-color: var(--cobalt);
+  background: var(--cobalt-soft);
+}
+
+.drop-zone input {
+  display: none;
+}
+
+.chosen-files {
+  grid-column: 1 / -1;
+  margin: 0;
+  padding: 0;
+  color: var(--muted);
+  font-size: 13.5px;
+  list-style: none;
+}
+
+/* Push API */
+
+.api-intro {
+  max-width: 70ch;
+  margin: 0 0 14px;
+}
+
+.code-block {
+  margin: 0 0 12px;
+  padding: 16px;
+  overflow-x: auto;
+  border-radius: 7px;
+  background: #1f2633;
+  color: #e6e9ef;
+  font-family: var(--mono);
+  font-size: 13px;
+  line-height: 1.55;
+  white-space: pre;
+}
+
+@media (max-width: 600px) {
+  .source-row {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+}
+
+@media (max-width: 900px) {
+  .add-form {
+    grid-template-columns: 1fr;
+  }
+}

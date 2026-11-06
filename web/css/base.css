@@ -1,0 +1,196 @@
+:root {
+  --canvas: #eef0f3;
+  --panel: #ffffff;
+  --sidebar: #e4e8ee;
+  --ink: #18202d;
+  --muted: #5b6576;
+  --faint: #8a93a3;
+  --line: #d6dbe3;
+  --cobalt: #2b4eb5;
+  --cobalt-dark: #203c8c;
+  --cobalt-soft: #e1e7f7;
+  --danger: #b3261e;
+  --danger-soft: #fbeceb;
+
+  /* One color per kind of source. Used for borders, dots and labels, never as decoration. */
+  --kind-docs: #2f7a5d;
+  --kind-issue: #a86512;
+  --kind-pr: #6f4bb0;
+  --kind-file: #2d6f8e;
+  --kind-note: #8a5a44;
+
+  --sans: "Public Sans", system-ui, sans-serif;
+  --serif: "Source Serif 4", Georgia, serif;
+  --mono: "JetBrains Mono", ui-monospace, monospace;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+/* Without this, elements with display: grid or flex ignore the hidden attribute */
+[hidden] {
+  display: none !important;
+}
+
+html,
+body {
+  margin: 0;
+  height: 100%;
+}
+
+body {
+  background: var(--canvas);
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+a {
+  color: var(--cobalt);
+}
+
+:focus-visible {
+  outline: 3px solid var(--cobalt);
+  outline-offset: 2px;
+}
+
+h1,
+h2,
+h3 {
+  margin: 0;
+  letter-spacing: -0.015em;
+}
+
+code {
+  font-family: var(--mono);
+}
+
+/* Buttons */
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 9px 18px;
+  border: 0;
+  border-radius: 7px;
+  background: var(--cobalt);
+  color: #ffffff;
+  font-family: var(--sans);
+  font-size: 14.5px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.button:hover {
+  background: var(--cobalt-dark);
+}
+
+.button:disabled {
+  background: var(--faint);
+  cursor: wait;
+}
+
+.button.quiet {
+  padding: 6px 10px;
+  border: 1px solid var(--line);
+  background: var(--panel);
+  color: var(--ink);
+  font-weight: 500;
+  font-size: 13.5px;
+}
+
+.button.quiet:hover {
+  border-color: var(--muted);
+  background: var(--panel);
+}
+
+.button.quiet:disabled {
+  background: var(--panel);
+  color: var(--faint);
+  cursor: not-allowed;
+}
+
+.button.quiet.danger:hover {
+  border-color: var(--danger);
+  color: var(--danger);
+}
+
+.button svg {
+  width: 15px;
+  height: 15px;
+}
+
+/* Form fields */
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  font-size: 13.5px;
+  font-weight: 500;
+}
+
+.field input,
+.field select,
+.field textarea {
+  padding: 9px 11px;
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  background: var(--panel);
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: 14.5px;
+  font-weight: 400;
+}
+
+.field input:focus,
+.field select:focus {
+  border-color: var(--cobalt);
+  outline: none;
+}
+
+.field small {
+  color: var(--muted);
+  font-weight: 400;
+}
+
+/* Kind markers: the colored dot next to sources, and the legend */
+
+.kind-dot {
+  display: inline-block;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--faint);
+  flex-shrink: 0;
+}
+
+.kind-docs .kind-dot, .kind-dot.kind-docs { background: var(--kind-docs); }
+.kind-issue .kind-dot, .kind-dot.kind-issue { background: var(--kind-issue); }
+.kind-pr .kind-dot, .kind-dot.kind-pr { background: var(--kind-pr); }
+.kind-file .kind-dot, .kind-dot.kind-file { background: var(--kind-file); }
+.kind-note .kind-dot, .kind-dot.kind-note { background: var(--kind-note); }
+
+.notice {
+  margin: 0;
+  padding: 12px 14px;
+  border-left: 3px solid var(--danger);
+  background: var(--danger-soft);
+  color: #7a1a14;
+}
+
+.empty {
+  color: var(--muted);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

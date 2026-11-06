@@ -1,0 +1,257 @@
+.app {
+  display: grid;
+  grid-template-columns: 248px minmax(0, 1fr);
+  min-height: 100vh;
+}
+
+/* Sidebar */
+
+.sidebar {
+  position: sticky;
+  top: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  height: 100vh;
+  padding: 20px 16px;
+  border-right: 1px solid var(--line);
+  background: var(--sidebar);
+  overflow-y: auto;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 6px;
+  color: var(--ink);
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  text-decoration: none;
+}
+
+.brand-mark {
+  width: 26px;
+  height: 26px;
+}
+
+.brand-mark line {
+  stroke: var(--muted);
+  stroke-width: 1.5;
+}
+
+.node-a { fill: var(--kind-docs); }
+.node-b { fill: var(--kind-issue); }
+.node-c { fill: var(--kind-pr); }
+
+.workspace-picker {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 0 6px;
+  color: var(--muted);
+  font-size: 12.5px;
+  font-weight: 500;
+}
+
+.workspace-picker select {
+  width: 100%;
+  padding: 8px 10px;
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  background: var(--panel);
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: 14.5px;
+  font-weight: 600;
+}
+
+.nav {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.nav a {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 10px;
+  border-radius: 7px;
+  color: var(--ink);
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.nav a:hover {
+  background: rgba(24, 32, 45, 0.06);
+}
+
+.nav a.active {
+  background: var(--panel);
+  box-shadow: 0 1px 2px rgba(24, 32, 45, 0.1);
+}
+
+.nav svg {
+  width: 17px;
+  height: 17px;
+  color: var(--muted);
+}
+
+.nav a.active svg {
+  color: var(--cobalt);
+}
+
+.nav-count {
+  margin-left: auto;
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.recent h2 {
+  margin: 0 0 6px;
+  padding: 0 10px;
+  color: var(--muted);
+  font-size: 12.5px;
+  font-weight: 500;
+  letter-spacing: 0;
+}
+
+.recent ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.recent button {
+  display: block;
+  width: 100%;
+  padding: 6px 10px;
+  border: 0;
+  border-radius: 6px;
+  background: none;
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: 13.5px;
+  text-align: left;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  cursor: pointer;
+}
+
+.recent button:hover {
+  background: rgba(24, 32, 45, 0.06);
+}
+
+.model-status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: auto 0 0;
+  padding: 10px;
+  border-top: 1px solid var(--line);
+  color: var(--muted);
+  font-size: 13px;
+}
+
+#model-status-text {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.model-status::before {
+  flex-shrink: 0;
+  content: "";
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--kind-docs);
+}
+
+/* Main area */
+
+.main {
+  min-width: 0;
+  padding: 32px 44px 80px;
+}
+
+.page-header {
+  max-width: 1080px;
+  margin-bottom: 28px;
+}
+
+.page-header h1 {
+  font-size: 26px;
+  font-weight: 650;
+}
+
+.page-header p {
+  margin: 4px 0 0;
+  max-width: 70ch;
+  color: var(--muted);
+}
+
+#page {
+  max-width: 1080px;
+}
+
+.section-title {
+  margin-bottom: 4px;
+  font-size: 17px;
+  font-weight: 600;
+}
+
+.section-intro {
+  margin: 0 0 18px;
+  max-width: 72ch;
+  color: var(--muted);
+}
+
+/* Narrow screens: the sidebar becomes a bar at the top */
+
+@media (max-width: 860px) {
+  .app {
+    grid-template-columns: 1fr;
+  }
+
+  .sidebar {
+    position: static;
+    height: auto;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    border-right: 0;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .workspace-picker span,
+  .recent,
+  .model-status {
+    display: none;
+  }
+
+  .workspace-picker {
+    flex: 1;
+    min-width: 160px;
+  }
+
+  .nav {
+    flex-direction: row;
+    width: 100%;
+  }
+
+  .nav a {
+    flex: 1;
+    justify-content: center;
+  }
+
+  .main {
+    padding: 24px 16px 60px;
+  }
+}

@@ -115,7 +115,9 @@ def save_run(workspace_id, pipeline_name, model_name, summary, results, retrieva
     folder = config.eval_results_dir(workspace_id)
     os.makedirs(folder, exist_ok=True)
 
-    mode = "retrieval" if retrieval_only else "full"
+    mode = "full"
+    if retrieval_only:
+        mode = "retrieval"
     timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
     path = os.path.join(folder, timestamp + "_" + pipeline_name + "_" + mode + ".json")
 
@@ -169,7 +171,9 @@ def run_eval(workspace_id, pipeline_name, limit=None, retrieval_only=False, repo
         from nexus.llm.provider import get_llm
         model_name = get_llm().name
 
-    mode = "retrieval" if retrieval_only else "full"
+    mode = "full"
+    if retrieval_only:
+        mode = "retrieval"
     unfinished_path = progress_file(workspace_id, pipeline_name, mode)
     os.makedirs(os.path.dirname(unfinished_path), exist_ok=True)
 

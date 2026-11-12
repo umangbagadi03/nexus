@@ -113,7 +113,9 @@ def build_graph(documents):
 
     for document in documents:
         if document["kind"] in ("issue", "pr"):
-            numbers = issue_ids.setdefault(document["source_id"], {})
+            if document["source_id"] not in issue_ids:
+                issue_ids[document["source_id"]] = {}
+            numbers = issue_ids[document["source_id"]]
             numbers[document["number"]] = document["id"]
         elif document["url"]:
             key = page_key(document["url"])

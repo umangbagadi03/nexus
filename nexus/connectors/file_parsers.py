@@ -41,7 +41,9 @@ def read_word(path):
         if not text:
             continue
 
-        style = paragraph.style.name if paragraph.style is not None else ""
+        style = ""
+        if paragraph.style is not None:
+            style = paragraph.style.name
         if style.startswith("Heading 1") or style == "Title":
             parts.append("## " + text)
         elif style.startswith("Heading"):

@@ -12,7 +12,10 @@ class FakeLLM:
 
 
 def run_judge(monkeypatch, reply):
-    monkeypatch.setattr(judge, "get_llm", lambda: FakeLLM(reply))
+    def get_fake_llm():
+        return FakeLLM(reply)
+
+    monkeypatch.setattr(judge, "get_llm", get_fake_llm)
     return judge.judge_answer("question", "reference", "answer")
 
 

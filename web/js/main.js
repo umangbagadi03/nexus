@@ -1,5 +1,6 @@
 import * as api from "./api.js";
 import { clear, el } from "./dom.js";
+import { kindName, timeAgo } from "./format.js";
 import { fillIcons } from "./icons.js";
 import { setUpModelPanel } from "./model.js";
 import { setUpThemeToggle } from "./theme.js";
@@ -63,7 +64,34 @@ export function renderSidebar() {
   document.title = workspace.name + " - Nexus";
   workspaceSelect.value = workspace.id;
 
+  renderWorkspaceStats(workspace);
   renderRecentQuestions();
+}
+
+
+// Under the workspace name: what it holds, and when it was last synced
+function renderWorkspaceStats(workspace) {
+  const list = document.getElementById("workspace-stats");
+  clear(list);
+
+  for (const kind of Object.keys(workspace.counts)) {
+    const count = workspace.counts[kind];
+    const item = el("li", "kind-" + kind);
+    item.appendChild(el("span", "kind-dot"));
+    item.appendChild(el("strong", "", count));
+    item.appendChild(document.createTextNode(" " + kindName(kind, count)));
+    list.appendChild(item);
+  }
+
+  let newest = "";
+  for (const source of workspace.sources) {
+    if (source.last_synced && source.last_synced > newest) {
+      newest = source.last_synced;
+    }
+  }
+  if (newest) {
+    list.appendChild(el("li", "stats-synced", "Synced " + timeAgo(newest)));
+  }
 }
 
 

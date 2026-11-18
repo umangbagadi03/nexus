@@ -39,4 +39,8 @@ def test_sections_without_the_words_are_left_out(monkeypatch):
 
 
 def test_words_ignore_case_and_punctuation():
-    assert keyword_search.words("GRAPH_RECURSION_LIMIT, Fix it!") == ["graph_recursion_limit", "fix", "it"]
+    assert keyword_search.words("GRAPH_RECURSION_LIMIT, Fix it!") == ["graph_recursion_limit", "fix"]
+
+
+def test_common_words_are_ignored():
+    assert keyword_search.words("When should I use Slack") == ["slack"]

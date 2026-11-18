@@ -13,9 +13,22 @@ from nexus.indexing import hybrid_store
 _index_by_workspace = {}
 _lock = threading.Lock()
 
+# Common words that say nothing about the topic. Without this, "when should I use"
+# matches every page that happens to use those words a lot.
+STOP_WORDS = {
+    "a", "an", "and", "are", "as", "at", "be", "but", "by", "can", "do", "does", "for", "from",
+    "how", "i", "if", "in", "into", "is", "it", "its", "me", "my", "of", "on", "or", "our",
+    "should", "so", "that", "the", "their", "there", "this", "to", "use", "was", "we", "what",
+    "when", "where", "which", "who", "why", "will", "with", "you", "your",
+}
+
 
 def words(text):
-    return re.findall(r"[a-z0-9_]+", text.lower())
+    kept = []
+    for word in re.findall(r"[a-z0-9_]+", text.lower()):
+        if word not in STOP_WORDS:
+            kept.append(word)
+    return kept
 
 
 def get_index(workspace_id):

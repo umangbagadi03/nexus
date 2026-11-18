@@ -1,7 +1,6 @@
 import * as api from "../api.js";
 import { clear, el } from "../dom.js";
 import { kindName } from "../format.js";
-import { icon } from "../icons.js";
 import { renderSidebar } from "../main.js";
 import { CONNECTOR_INFO } from "./home.js";
 import { rememberAnswer, state } from "../state.js";
@@ -136,7 +135,7 @@ function buildStart() {
     const connector = CONNECTOR_INFO[source.type];
     const item = el("li", "kind-" + connector.kind);
     item.title = connector.label;
-    item.appendChild(icon(connector.icon));
+    item.appendChild(el("span", "kind-dot"));
     item.appendChild(el("span", "", source.name));
     item.appendChild(el("strong", "", source.documents));
     contents.appendChild(item);
@@ -428,7 +427,10 @@ function buildSources(sources) {
     if (source.via) {
       label += ". " + source.via;
     }
-    item.appendChild(el("p", "source-label", label));
+    const labelLine = el("p", "source-label");
+    labelLine.appendChild(el("span", "kind-dot"));
+    labelLine.appendChild(document.createTextNode(label));
+    item.appendChild(labelLine);
     item.appendChild(el("p", "source-snippet", cleanSnippet(source.snippet)));
 
     list.appendChild(item);

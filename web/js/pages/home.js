@@ -21,7 +21,7 @@ const STEPS = [
   [
     "Nexus indexes and links them",
     "Every section is searchable by meaning and by exact keywords. Links between documents, like an issue " +
-    "and the pull request that fixed it, or a policy and the pages it refers to, become a graph.",
+    "and the pull request linked to it, or a policy and the pages it refers to, become a graph.",
   ],
   [
     "Ask in plain language",
@@ -30,56 +30,168 @@ const STEPS = [
   ],
 ];
 
+// A real answer from the LangGraph eval set (question q13), shown on the home page
+// so people see what Nexus produces before they open a workspace
+const SAMPLE_ANSWER = {
+  workspace: "LangGraph",
+  question: "With ToolNode, messages added through Command.update end up between parallel tool results " +
+    "and later requests fail. Is this fixed?",
+  // Each part is plain text, bold text, or a citation number
+  answer: [
+    ["text", "No, this is not fixed. While a pull request was created to address this issue, "],
+    ["bold", "Pull Request #9560"],
+    ["text", " was closed without being merged "],
+    ["cite", "2"],
+    ["text", ". Consequently, the bug described in "],
+    ["bold", "Issue #9556"],
+    ["text", " remains open "],
+    ["cite", "1"],
+    ["text", "."],
+  ],
+  sources: [
+    ["1", "issue", "ToolNode: messages added via Command.update end up between parallel tool results, so every later request fails", "Issue #9556, open"],
+    ["2", "pr", "fix(prebuilt): keep parallel tool results contiguous", "Pull request #9560, closed without merging"],
+  ],
+};
+
 let listHolder = null;
 
 
 export function renderHomePage(container) {
   document.title = "Nexus";
 
-  const hero = el("section", "home-hero");
-  hero.appendChild(el("h1", "", "Ask questions across your company's knowledge"));
-  hero.appendChild(el("p", "",
-    "Nexus connects to the places where your team writes things down and answers questions from them, " +
-    "showing exactly which documents each answer came from."));
-  container.appendChild(hero);
+  const form = buildNewWorkspaceForm();
+  form.hidden = true;
 
-  const steps = el("ol", "steps");
-  for (const step of STEPS) {
-    const item = el("li");
-    item.appendChild(el("strong", "", step[0]));
-    item.appendChild(el("span", "", step[1]));
-    steps.appendChild(item);
+  function showNewWorkspaceForm() {
+    form.hidden = false;
+    form.scrollIntoView({ block: "center" });
+    form.querySelector("input").focus();
   }
-  container.appendChild(steps);
+
+  container.appendChild(buildHero(showNewWorkspaceForm));
+  container.appendChild(buildSteps());
 
   const section = el("section", "home-workspaces");
   const heading = el("div", "home-workspaces-heading");
   heading.appendChild(el("h2", "section-title", "Workspaces"));
 
-  const newButton = el("button", "button");
+  const newButton = el("button", "button quiet");
   newButton.type = "button";
   newButton.appendChild(icon("plus"));
   newButton.appendChild(document.createTextNode("New workspace"));
+  newButton.addEventListener("click", showNewWorkspaceForm);
   heading.appendChild(newButton);
   section.appendChild(heading);
 
   section.appendChild(el("p", "section-intro",
     "Each workspace has its own sources, index and evaluation set, and never sees another workspace's documents. " +
-    "The two below are samples built from public data: GitLab's company handbook, and the LangGraph project's docs, issues and pull requests."));
+    "The samples use public data: GitLab's handbook, the LangGraph project, and one generated PDF."));
 
-  const form = buildNewWorkspaceForm();
-  form.hidden = true;
   section.appendChild(form);
-  newButton.addEventListener("click", function () {
-    form.hidden = false;
-    form.querySelector("input").focus();
-  });
 
   listHolder = el("div");
   section.appendChild(listHolder);
   renderWorkspaceList();
 
   container.appendChild(section);
+}
+
+
+function buildHero(showNewWorkspaceForm) {
+  const hero = el("section", "home-hero");
+
+  const text = el("div", "home-hero-text");
+  text.appendChild(el("h1", "", "Ask your company's documents and see where every answer comes from"));
+  text.appendChild(el("p", "",
+    "Connect handbooks, PDFs, docs in Git and GitHub issues. Nexus searches them, follows the links " +
+    "between them, and answers with citations you can open."));
+
+  const actions = el("div", "home-hero-actions");
+  const askButton = el("button", "button", "Ask a question");
+  askButton.type = "button";
+  askButton.addEventListener("click", function () {
+    let workspaceId = null;
+    if (state.workspace) {
+      workspaceId = state.workspace.id;
+    } else if (state.workspaces.length > 0) {
+      workspaceId = state.workspaces[0].id;
+    }
+
+    if (workspaceId) {
+      openWorkspace(workspaceId, "ask");
+    } else {
+      showNewWorkspaceForm();
+    }
+  });
+  const createButton = el("button", "button quiet", "Create a workspace");
+  createButton.type = "button";
+  createButton.addEventListener("click", showNewWorkspaceForm);
+  actions.appendChild(askButton);
+  actions.appendChild(createButton);
+  text.appendChild(actions);
+
+  hero.appendChild(text);
+  hero.appendChild(buildAnswerPreview());
+  return hero;
+}
+
+
+// The sample answer, drawn the same way the Ask page draws a real one
+function buildAnswerPreview() {
+  const preview = el("figure", "preview");
+
+  const top = el("div", "preview-top");
+  top.appendChild(el("span", "", SAMPLE_ANSWER.workspace));
+  top.appendChild(el("span", "", "Agentic pipeline"));
+  preview.appendChild(top);
+
+  preview.appendChild(el("p", "preview-question", SAMPLE_ANSWER.question));
+
+  const answer = el("p", "preview-answer");
+  for (const part of SAMPLE_ANSWER.answer) {
+    if (part[0] === "bold") {
+      answer.appendChild(el("strong", "", part[1]));
+    } else if (part[0] === "cite") {
+      answer.appendChild(el("span", "cite", part[1]));
+    } else {
+      answer.appendChild(document.createTextNode(part[1]));
+    }
+  }
+  preview.appendChild(answer);
+
+  const sources = el("ol", "preview-sources");
+  for (const source of SAMPLE_ANSWER.sources) {
+    const item = el("li", "kind-" + source[1]);
+    item.appendChild(el("span", "source-number", source[0]));
+
+    const words = el("div");
+    words.appendChild(el("p", "preview-source-title", source[2]));
+    const label = el("p", "preview-source-label");
+    label.appendChild(el("span", "kind-dot"));
+    label.appendChild(document.createTextNode(source[3]));
+    words.appendChild(label);
+    item.appendChild(words);
+
+    sources.appendChild(item);
+  }
+  preview.appendChild(sources);
+
+  preview.appendChild(el("figcaption", "", "A real answer from the LangGraph evaluation set"));
+  return preview;
+}
+
+
+function buildSteps() {
+  const steps = el("ol", "steps");
+  for (let index = 0; index < STEPS.length; index++) {
+    const item = el("li");
+    item.appendChild(el("span", "step-number", index + 1));
+    item.appendChild(el("strong", "", STEPS[index][0]));
+    item.appendChild(el("span", "", STEPS[index][1]));
+    steps.appendChild(item);
+  }
+  return steps;
 }
 
 
@@ -123,7 +235,7 @@ function buildWorkspaceRow(workspace) {
     const connector = CONNECTOR_INFO[source.type];
     const item = el("li", "connector kind-" + connector.kind);
     item.title = connector.label;
-    item.appendChild(icon(connector.icon));
+    item.appendChild(el("span", "kind-dot"));
     item.appendChild(el("span", "", source.name));
     item.appendChild(el("strong", "", source.documents));
     connectors.appendChild(item);
@@ -132,12 +244,12 @@ function buildWorkspaceRow(workspace) {
   row.appendChild(info);
 
   const actions = el("div", "workspace-actions");
-  const askButton = el("button", "button", "Ask");
+  const askButton = el("button", "button quiet", "Ask");
   askButton.type = "button";
   askButton.addEventListener("click", function () {
     openWorkspace(workspace.id, "ask");
   });
-  const sourcesButton = el("button", "button quiet", "Manage sources");
+  const sourcesButton = el("button", "button quiet", "Sources");
   sourcesButton.type = "button";
   sourcesButton.addEventListener("click", function () {
     openWorkspace(workspace.id, "sources");

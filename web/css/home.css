@@ -1,79 +1,184 @@
+/* Hero: what Nexus does on the left, a real answer on the right */
+
 .home-hero {
-  max-width: 760px;
-  margin: 12px 0 36px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr);
+  gap: 48px;
+  align-items: center;
+  margin: 8px 0 64px;
 }
 
 .home-hero h1 {
-  font-size: 38px;
-  font-weight: 650;
-  line-height: 1.12;
-  letter-spacing: -0.025em;
+  max-width: 17ch;
+  font-family: var(--serif);
+  font-size: 48px;
+  font-weight: 400;
+  line-height: 52px;
+  letter-spacing: -0.02em;
 }
 
 .home-hero p {
-  margin: 14px 0 0;
-  max-width: 62ch;
-  color: var(--muted);
+  max-width: 36rem;
+  margin: 16px 0 0;
+  color: var(--text-2);
   font-size: 17px;
+  line-height: 28px;
 }
 
-/* How it works: three real steps, so a numbered list fits */
+.home-hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 32px;
+}
+
+.home-hero-actions .button {
+  height: 44px;
+  padding: 0 20px;
+  font-size: 15px;
+}
+
+/* The sample answer card */
+
+.preview {
+  margin: 0;
+  padding: 24px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: var(--surface);
+  box-shadow: 0 8px 24px rgba(29, 27, 24, 0.06);
+}
+
+.preview-top {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--line);
+  color: var(--text-3);
+  font-size: 12px;
+  line-height: 16px;
+}
+
+.preview .preview-question {
+  margin: 0;
+  max-width: none;
+  color: var(--text);
+  font-family: var(--serif);
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 28px;
+}
+
+.preview .preview-answer {
+  margin: 12px 0 20px;
+  max-width: none;
+  color: var(--text);
+  font-family: var(--serif);
+  font-size: 17px;
+  line-height: 28px;
+}
+
+.preview-answer strong {
+  font-weight: 500;
+}
+
+.preview-answer .cite {
+  margin: 0 2px;
+  vertical-align: 1px;
+}
+
+.preview-sources {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.preview-sources li {
+  display: grid;
+  grid-template-columns: 20px minmax(0, 1fr);
+  gap: 12px;
+  align-items: start;
+  padding: 12px;
+  border-radius: 8px;
+  background: var(--page);
+}
+
+.preview .preview-source-title {
+  margin: 0;
+  max-width: none;
+  color: var(--text);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 20px;
+}
+
+.preview .preview-source-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 4px 0 0;
+  color: var(--text-3);
+  font-size: 12px;
+  line-height: 16px;
+}
+
+.preview figcaption {
+  margin-top: 16px;
+  color: var(--text-3);
+  font-size: 12px;
+  line-height: 16px;
+}
+
+/* How it works: three real steps */
 
 .steps {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 0;
-  max-width: 1080px;
-  margin: 0 0 48px;
-  padding: 0;
-  border-top: 2px solid var(--ink);
+  gap: 32px;
+  margin: 0 0 64px;
+  padding: 24px 0 0;
+  border-top: 1px solid var(--line);
   list-style: none;
-  counter-reset: step;
 }
 
-.steps li {
-  padding: 16px 24px 0 0;
-  counter-increment: step;
-}
-
-.steps li::before {
-  content: counter(step);
+.step-number {
   display: block;
   margin-bottom: 8px;
-  color: var(--cobalt);
-  font-family: var(--serif);
-  font-size: 28px;
-  font-weight: 600;
-  line-height: 1;
+  color: var(--text-3);
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
 }
 
 .steps strong {
   display: block;
-  margin-bottom: 6px;
-  font-size: 15.5px;
-  font-weight: 600;
+  margin-bottom: 4px;
+  font-size: 15px;
+  font-weight: 500;
 }
 
-.steps span {
-  color: var(--muted);
+.steps li > span:last-child {
+  color: var(--text-2);
   font-size: 14px;
 }
 
 /* Workspace list */
-
-.home-workspaces {
-  max-width: 1080px;
-}
 
 .home-workspaces-heading {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 16px;
-  margin-bottom: 6px;
 }
 
 .workspace-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
   margin: 0;
   padding: 0;
   list-style: none;
@@ -82,36 +187,42 @@
 .workspace-row {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
-  gap: 20px;
+  gap: 24px;
   align-items: start;
-  margin-bottom: 12px;
-  padding: 20px 22px;
+  padding: 20px 24px;
   border: 1px solid var(--line);
-  border-radius: 8px;
-  background: var(--panel);
+  border-radius: 12px;
+  background: var(--surface);
+  transition: border-color 150ms var(--ease);
+}
+
+.workspace-row:hover {
+  border-color: var(--line-strong);
 }
 
 .workspace-name {
   padding: 0;
   border: 0;
   background: none;
-  color: var(--ink);
+  color: var(--text);
   font-family: var(--sans);
-  font-size: 19px;
-  font-weight: 650;
-  letter-spacing: -0.01em;
+  font-size: 17px;
+  font-weight: 500;
+  line-height: 24px;
   text-align: left;
   cursor: pointer;
+  transition: color 150ms var(--ease);
 }
 
 .workspace-name:hover {
-  color: var(--cobalt);
+  color: var(--accent);
 }
 
 .workspace-description {
-  margin: 4px 0 14px;
-  max-width: 70ch;
-  color: var(--muted);
+  margin: 4px 0 12px;
+  max-width: 68ch;
+  color: var(--text-2);
+  font-size: 14px;
 }
 
 .connector-list {
@@ -123,102 +234,86 @@
   list-style: none;
 }
 
-/* One chip per connected source. The left border uses the source's kind color. */
 .connector {
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  gap: 7px;
-  padding: 5px 10px 5px 8px;
+  gap: 8px;
+  height: 28px;
+  padding: 0 12px 0 10px;
   border: 1px solid var(--line);
-  border-left: 3px solid var(--faint);
   border-radius: 6px;
-  font-size: 13.5px;
-}
-
-.connector svg {
-  width: 15px;
-  height: 15px;
-  color: var(--muted);
+  color: var(--text-2);
+  font-size: 13px;
 }
 
 .connector strong {
-  color: var(--muted);
-  font-weight: 600;
+  color: var(--text-3);
+  font-weight: 400;
+  font-variant-numeric: tabular-nums;
 }
-
-.connector.kind-docs { border-left-color: var(--kind-docs); }
-.connector.kind-issue { border-left-color: var(--kind-issue); }
-.connector.kind-file { border-left-color: var(--kind-file); }
-.connector.kind-note { border-left-color: var(--kind-note); }
 
 .workspace-actions {
   display: flex;
+  align-items: center;
   gap: 8px;
 }
 
 .new-workspace {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr);
-  gap: 14px 18px;
-  margin-bottom: 18px;
-  padding: 20px 22px;
-  border: 1px solid var(--cobalt);
-  border-radius: 8px;
-  background: var(--panel);
+  gap: 16px;
+  margin-bottom: 16px;
+  padding: 20px 24px;
+  border: 1px solid var(--line-strong);
+  border-radius: 12px;
+  background: var(--surface);
 }
 
 .new-workspace-actions {
   grid-column: 1 / -1;
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
 }
 
-/* Breadcrumb above workspace pages */
+@media (max-width: 1100px) {
+  .home-hero {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 40px;
+  }
 
-.breadcrumb {
-  margin: 0 0 4px;
-  font-size: 13.5px;
-}
-
-.breadcrumb a {
-  color: var(--muted);
-  text-decoration: none;
-}
-
-.breadcrumb a:hover {
-  color: var(--cobalt);
-  text-decoration: underline;
-}
-
-.workspace-block {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  padding-top: 18px;
-  border-top: 1px solid var(--line);
+  .home-hero h1 {
+    max-width: 18ch;
+  }
 }
 
 @media (max-width: 860px) {
+  .home-hero {
+    margin: 0 0 48px;
+  }
+
+  .home-hero h1 {
+    font-size: 36px;
+    line-height: 40px;
+  }
+
+  .preview {
+    padding: 20px;
+  }
+
   .steps {
-    grid-template-columns: 1fr;
-    gap: 14px;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 24px;
+    margin-bottom: 48px;
   }
 
   .workspace-row,
   .new-workspace {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 16px;
   }
 
-  .workspace-block {
-    flex-direction: row;
+  .workspace-actions {
     flex-wrap: wrap;
-    width: 100%;
-    padding-top: 0;
-    border-top: 0;
-  }
-
-  .home-hero h1 {
-    font-size: 30px;
   }
 }

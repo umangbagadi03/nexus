@@ -15,7 +15,7 @@ def run_judge(monkeypatch, reply):
     def get_fake_llm():
         return FakeLLM(reply)
 
-    monkeypatch.setattr(judge, "get_llm", get_fake_llm)
+    monkeypatch.setattr(judge, "require_llm", get_fake_llm)
     return judge.judge_answer("question", "reference", "answer")
 
 

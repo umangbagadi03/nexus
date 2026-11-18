@@ -15,11 +15,12 @@ def get_agent():
     return _agent
 
 
-def stream_answer(workspace_id, question):
+def stream_answer(llm, workspace_id, question):
     """Corrective RAG: search, follow links, check relevance, search again if needed, answer, check the answer."""
     started = time.time()
 
     start_state = {
+        "llm": llm,
         "workspace_id": workspace_id,
         "question": question,
         "query": question,
@@ -54,10 +55,11 @@ def stream_answer(workspace_id, question):
         final_state["steps"],
         PIPELINE_NAME,
         time.time() - started,
+        llm.name,
         final_state["check"],
     )
     yield {"type": "result", "result": result}
 
 
-def answer_question(workspace_id, question):
-    return final_result(stream_answer(workspace_id, question))
+def answer_question(llm, workspace_id, question):
+    return final_result(stream_answer(llm, workspace_id, question))

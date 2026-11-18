@@ -1,4 +1,3 @@
-from nexus.llm.provider import get_llm
 from nexus.rag.prompts import build_answer_prompt, build_system_prompt, describe_source
 from nexus.workspaces import store
 
@@ -9,11 +8,11 @@ from nexus.workspaces import store
 #   {"type": "result", "result": ...} the finished answer, always the last event
 
 
-def stream_answer_text(workspace_id, question, documents):
+def stream_answer_text(llm, workspace_id, question, documents):
     workspace = store.get_workspace(workspace_id)
     system_prompt = build_system_prompt(workspace["name"])
     prompt = build_answer_prompt(question, documents)
-    return get_llm().stream(system_prompt, prompt)
+    return llm.stream(system_prompt, prompt)
 
 
 def final_result(events):
@@ -42,14 +41,14 @@ def build_sources(documents):
     return sources
 
 
-def make_result(question, answer, documents, steps, pipeline_name, seconds, check=None):
+def make_result(question, answer, documents, steps, pipeline_name, seconds, model_name, check=None):
     return {
         "question": question,
         "answer": answer,
         "sources": build_sources(documents),
         "steps": steps,
         "check": check,
-        "model": get_llm().name,
+        "model": model_name,
         "pipeline": pipeline_name,
         "seconds": round(seconds, 2),
     }

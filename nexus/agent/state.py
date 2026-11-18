@@ -2,6 +2,7 @@ from typing import TypedDict
 
 
 class AgentState(TypedDict):
+    llm: object             # the model that answers this question
     workspace_id: str
     question: str
     query: str              # what we search for, can be rewritten

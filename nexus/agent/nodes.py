@@ -4,7 +4,6 @@ from nexus import config
 from nexus.agent.prompts import CHECK_SYSTEM_PROMPT, GRADER_SYSTEM_PROMPT, build_check_prompt, build_grader_prompt
 from nexus.graph.link_graph import get_neighbors
 from nexus.indexing import hybrid_store
-from nexus.llm.provider import get_llm
 from nexus.rag.answer_builder import stream_answer_text
 from nexus.rag.hybrid_retriever import limit_per_document, retrieve_sections
 from nexus.rag.retriever import group_by_document
@@ -105,7 +104,7 @@ def grade_node(state):
     show_status("Grading the sources")
     candidates = state["candidates"]
     prompt = build_grader_prompt(state["question"], candidates)
-    reply = get_llm().generate(GRADER_SYSTEM_PROMPT, prompt)
+    reply = state["llm"].generate(GRADER_SYSTEM_PROMPT, prompt)
     grade = parse_json_reply(reply)
 
     # If the grader reply is broken, keep everything and answer, rather than looping
@@ -172,7 +171,7 @@ def generate_node(state):
     documents = group_by_document(sections)
 
     answer = ""
-    for text in stream_answer_text(state["workspace_id"], state["question"], documents):
+    for text in stream_answer_text(state["llm"], state["workspace_id"], state["question"], documents):
         answer += text
         write_event({"type": "token", "text": text})
 
@@ -206,7 +205,7 @@ def verify_node(state):
 
     # The answer is already written, so a failed check must not lose it
     try:
-        claims = read_unsupported_claims(get_llm().generate(CHECK_SYSTEM_PROMPT, prompt))
+        claims = read_unsupported_claims(state["llm"].generate(CHECK_SYSTEM_PROMPT, prompt))
     except Exception as error:
         print("  answer check failed:", error)
         claims = None

@@ -1,4 +1,4 @@
-from nexus.llm.provider import get_llm
+from nexus.llm.provider import require_llm
 from nexus.utils.json_reply import parse_json_reply
 
 JUDGE_SYSTEM_PROMPT = """You grade answers to questions about a company's internal knowledge.
@@ -22,7 +22,7 @@ def judge_answer(question, reference_answer, answer):
     prompt += "Reference answer: " + reference_answer + "\n\n"
     prompt += "Answer to grade: " + answer
 
-    reply = get_llm().generate(JUDGE_SYSTEM_PROMPT, prompt)
+    reply = require_llm().generate(JUDGE_SYSTEM_PROMPT, prompt)
     data = parse_json_reply(reply)
 
     if data is None or not isinstance(data.get("key_facts"), list) or len(data["key_facts"]) == 0:

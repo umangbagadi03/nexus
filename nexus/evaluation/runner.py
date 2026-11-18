@@ -5,6 +5,7 @@ from datetime import datetime
 from nexus import config
 from nexus.evaluation.judge import judge_answer
 from nexus.evaluation.metrics import average, retrieval_recall
+from nexus.llm.provider import require_llm
 from nexus.pipelines import get_pipeline
 from nexus.rag.hybrid_retriever import retrieve_sections
 from nexus.rag.retriever import retrieve
@@ -44,7 +45,7 @@ def evaluate_retrieval_only(workspace_id, pipeline_name, item):
 
 def evaluate_full(workspace_id, pipeline_name, item):
     answer_question = get_pipeline(pipeline_name)
-    result = answer_question(workspace_id, item["question"])
+    result = answer_question(require_llm(), workspace_id, item["question"])
 
     retrieved_urls = []
     for source in result["sources"]:
@@ -168,8 +169,7 @@ def run_eval(workspace_id, pipeline_name, limit=None, retrieval_only=False, repo
 
     model_name = ""
     if not retrieval_only:
-        from nexus.llm.provider import get_llm
-        model_name = get_llm().name
+        model_name = require_llm().name
 
     mode = "full"
     if retrieval_only:

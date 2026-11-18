@@ -2,7 +2,7 @@ from nexus.agent import pipeline as agentic
 from nexus.rag import baseline, hybrid
 
 # Each pipeline adds on top of the previous one, so the evals show what each step is worth.
-# Every pipeline is called as answer_question(workspace_id, question).
+# Every pipeline is called as answer_question(llm, workspace_id, question).
 PIPELINES = {
     "baseline": baseline.answer_question,
     "hybrid": hybrid.answer_question,

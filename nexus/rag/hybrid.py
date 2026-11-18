@@ -7,7 +7,7 @@ from nexus.rag.retriever import group_by_document
 PIPELINE_NAME = "hybrid"
 
 
-def stream_answer(workspace_id, question):
+def stream_answer(llm, workspace_id, question):
     """Hybrid search (dense + BM25 + RRF), reranker and parent sections, then one LLM call.
 
     No grading or retries. This shows how much better retrieval alone helps.
@@ -20,13 +20,13 @@ def stream_answer(workspace_id, question):
 
     yield {"type": "status", "text": "Writing the answer"}
     answer = ""
-    for text in stream_answer_text(workspace_id, question, documents):
+    for text in stream_answer_text(llm, workspace_id, question, documents):
         answer += text
         yield {"type": "token", "text": text}
 
-    result = make_result(question, answer, documents, [], PIPELINE_NAME, time.time() - started)
+    result = make_result(question, answer, documents, [], PIPELINE_NAME, time.time() - started, llm.name)
     yield {"type": "result", "result": result}
 
 
-def answer_question(workspace_id, question):
-    return final_result(stream_answer(workspace_id, question))
+def answer_question(llm, workspace_id, question):
+    return final_result(stream_answer(llm, workspace_id, question))

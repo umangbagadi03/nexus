@@ -1,5 +1,7 @@
 # Nexus
 
+[![Live demo](https://img.shields.io/badge/live%20demo-online-2b4aa8)](https://nexus-phmk.onrender.com)
+
 Nexus is a knowledge assistant for companies. Connect the places where knowledge lives (handbooks, docs, uploaded files, GitHub issues and pull requests, or anything a script can send) and people can ask questions in plain language. Every answer cites the documents it came from, and shows the steps the agent took to find them.
 
 ![How Nexus works: from connecting a team's documents to a checked, cited answer](docs/nexus-flow.gif)
@@ -16,13 +18,15 @@ Everything runs on a laptop. Embeddings, keyword search, the reranker and the ve
 
 ## Live demo
 
-[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/umangbagadi03/nexus)
+### [Try it: nexus-phmk.onrender.com](https://nexus-phmk.onrender.com)
 
-The demo runs on Render's free plan, which has 512 MB of memory. So it is a lighter version than the one on a laptop:
+The first visit after a quiet spell takes about a minute, while the free server wakes up. The demo runs on Render's free plan, which has 512 MB of memory. So it is a lighter version than the one on a laptop:
 
 - **Keyword search only.** The embedding model, the reranker and the vector database need about 1 GB, so the demo searches with BM25 alone (`LIGHT_SEARCH=true`). The evaluation results were measured with the full hybrid search.
 - **No API key on the server.** Without a key, a question returns the best matching sources. To get written answers, add your own Gemini, Claude or OpenAI key in the sidebar. It is kept in your browser tab only, sent with each question, and never stored or logged.
 - **Read only.** The demo only answers questions (`READ_ONLY=true`). Adding sources needs a disk that is kept between restarts, which the free plan does not have.
+
+To run your own copy for free: [![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/umangbagadi03/nexus)
 
 The [`Dockerfile`](Dockerfile) runs the full version, with hybrid search and the demo workspaces already indexed, on any Docker host with about 1 GB of memory.
 

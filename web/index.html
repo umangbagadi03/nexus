@@ -4,6 +4,15 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Nexus</title>
+  <script>
+    // Apply a saved theme before the page draws, so it never flashes the other one
+    try {
+      var savedTheme = localStorage.getItem("nexus-theme");
+      if (savedTheme === "dark" || savedTheme === "light") {
+        document.documentElement.dataset.theme = savedTheme;
+      }
+    } catch (error) {}
+  </script>
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -18,6 +27,7 @@
 <body>
   <div class="app">
     <aside class="sidebar">
+      <div class="sidebar-top">
       <a class="brand" href="#/">
         <svg class="brand-mark" viewBox="0 0 28 28" aria-hidden="true">
           <line x1="7" y1="8" x2="20" y2="6" />
@@ -29,6 +39,8 @@
         </svg>
         <span>Nexus</span>
       </a>
+      <button type="button" class="theme-toggle" id="theme-toggle"></button>
+      </div>
 
       <nav class="nav">
         <a href="#/" data-page="home"><span data-icon="home"></span>All workspaces</a>
@@ -53,6 +65,7 @@
       </div>
 
       <section class="model-panel" aria-label="Model">
+        <button type="button" class="button quiet add-key" id="add-key"><span data-icon="key"></span>Add your own API key</button>
         <button type="button" class="model-status" id="model-toggle" aria-expanded="false" aria-controls="model-form">
           <span class="model-dot"></span>
           <span id="model-status-text"></span>

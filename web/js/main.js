@@ -2,6 +2,7 @@ import * as api from "./api.js";
 import { clear, el } from "./dom.js";
 import { fillIcons } from "./icons.js";
 import { setUpModelPanel } from "./model.js";
+import { setUpThemeToggle } from "./theme.js";
 import { renderAskPage, showResult } from "./pages/ask.js";
 import { renderEvalsPage } from "./pages/evals.js";
 import { renderHomePage } from "./pages/home.js";
@@ -143,6 +144,7 @@ function savedWorkspaceId() {
 
 async function start() {
   fillIcons(document);
+  setUpThemeToggle();
 
   try {
     state.status = await api.getStatus();

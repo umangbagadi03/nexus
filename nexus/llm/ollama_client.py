@@ -6,8 +6,8 @@ from nexus import config
 
 
 class OllamaClient:
-    def __init__(self):
-        self.model = config.OLLAMA_MODEL
+    def __init__(self, model=""):
+        self.model = model or config.OLLAMA_MODEL
         self.name = "Ollama (" + self.model + ")"
         self.url = config.OLLAMA_URL + "/api/chat"
 

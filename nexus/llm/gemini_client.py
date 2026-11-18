@@ -20,10 +20,15 @@ def is_temporary(error):
 
 
 class GeminiClient:
-    def __init__(self):
-        self.models = [config.GEMINI_MODEL] + config.GEMINI_FALLBACK_MODELS
-        self.use_model(config.GEMINI_MODEL)
-        self.client = genai.Client(api_key=config.GEMINI_API_KEY)
+    def __init__(self, api_key="", model=""):
+        # A visitor's own key and model, or the ones from .env.
+        # A model the visitor picked is the only one tried.
+        if model:
+            self.models = [model]
+        else:
+            self.models = [config.GEMINI_MODEL] + config.GEMINI_FALLBACK_MODELS
+        self.use_model(self.models[0])
+        self.client = genai.Client(api_key=api_key or config.GEMINI_API_KEY)
 
     def use_model(self, model):
         self.model = model

@@ -4,10 +4,11 @@ from nexus import config
 
 
 class OpenAIClient:
-    def __init__(self):
-        self.model = config.OPENAI_MODEL
+    def __init__(self, api_key="", model=""):
+        # A visitor's own key and model, or the ones from .env
+        self.model = model or config.OPENAI_MODEL
         self.name = "OpenAI (" + self.model + ")"
-        self.client = OpenAI(api_key=config.OPENAI_API_KEY)
+        self.client = OpenAI(api_key=api_key or config.OPENAI_API_KEY)
 
     def messages(self, system_prompt, user_prompt):
         return [

@@ -4,10 +4,11 @@ from nexus import config
 
 
 class AnthropicClient:
-    def __init__(self):
-        self.model = config.ANTHROPIC_MODEL
+    def __init__(self, api_key="", model=""):
+        # A visitor's own key and model, or the ones from .env
+        self.model = model or config.ANTHROPIC_MODEL
         self.name = "Claude (" + self.model + ")"
-        self.client = anthropic.Anthropic(api_key=config.ANTHROPIC_API_KEY)
+        self.client = anthropic.Anthropic(api_key=api_key or config.ANTHROPIC_API_KEY)
 
     # In both calls below, fallbacks="default" lets the API retry on another
     # Claude model if this one declines the request

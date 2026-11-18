@@ -1,13 +1,13 @@
 import os
 
 from fastapi import FastAPI, HTTPException
-from fastapi.responses import FileResponse
+from fastapi.responses import FileResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
 
 from nexus import config
 from nexus.api import eval_routes, source_routes, workspace_routes
 from nexus.ingestion.pipeline import mark_interrupted_syncs
-from nexus.llm.provider import get_llm, pick_provider_name
+from nexus.llm.provider import PROVIDER_LABELS, VISITOR_PROVIDERS, default_model, get_llm
 from nexus.pipelines import DEFAULT_PIPELINE, PIPELINES
 
 app = FastAPI(title="Nexus")
@@ -30,11 +30,41 @@ async def always_revalidate(request, call_next):
     return response
 
 
+def is_question(path):
+    return path.endswith("/ask") or path.endswith("/ask/stream")
+
+
+@app.middleware("http")
+async def block_changes_when_read_only(request, call_next):
+    # A public demo only answers questions. Everything else that would change data is refused.
+    if config.READ_ONLY and request.method != "GET" and not is_question(request.url.path):
+        detail = "This is a read-only demo. Run Nexus on your own machine to add workspaces and sources."
+        return JSONResponse(status_code=403, content={"detail": detail})
+    return await call_next(request)
+
+
 @app.get("/api/status")
 def status():
+    llm = get_llm()
+    model = ""
+    if llm is not None:
+        model = llm.name
+
+    # What the web app offers when a visitor brings their own key
+    providers = []
+    for provider_name in VISITOR_PROVIDERS:
+        providers.append({
+            "id": provider_name,
+            "label": PROVIDER_LABELS[provider_name],
+            "default_model": default_model(provider_name),
+        })
+
     return {
-        "provider": pick_provider_name(),
-        "model": get_llm().name,
+        "model": model,
+        "search_only": llm is None,
+        "read_only": config.READ_ONLY,
+        "light_search": config.LIGHT_SEARCH,
+        "providers": providers,
         "pipelines": list(PIPELINES.keys()),
         "default_pipeline": DEFAULT_PIPELINE,
     }

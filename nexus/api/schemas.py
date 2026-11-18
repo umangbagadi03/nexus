@@ -1,6 +1,6 @@
 from typing import List, Optional
 
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 from nexus.pipelines import DEFAULT_PIPELINE
 
@@ -13,6 +13,10 @@ class CreateWorkspaceRequest(BaseModel):
 class AskRequest(BaseModel):
     question: str
     pipeline: str = DEFAULT_PIPELINE
+    # A visitor's own model. With no key, the server's model answers, or search only if it has none.
+    provider: str = "gemini"
+    api_key: str = Field(default="", max_length=400)
+    model: str = Field(default="", max_length=100)
 
 
 class GitHubIssuesSourceRequest(BaseModel):

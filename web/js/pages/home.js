@@ -76,7 +76,7 @@ export function renderHomePage(container) {
   const heading = el("div", "home-workspaces-heading");
   heading.appendChild(el("h2", "section-title", "Workspaces"));
 
-  const newButton = el("button", "button quiet");
+  const newButton = el("button", "button quiet writes");
   newButton.type = "button";
   newButton.appendChild(icon("plus"));
   newButton.appendChild(document.createTextNode("New workspace"));
@@ -124,7 +124,7 @@ function buildHero(showNewWorkspaceForm) {
       showNewWorkspaceForm();
     }
   });
-  const createButton = el("button", "button quiet", "Create a workspace");
+  const createButton = el("button", "button quiet writes", "Create a workspace");
   createButton.type = "button";
   createButton.addEventListener("click", showNewWorkspaceForm);
   actions.appendChild(askButton);
@@ -257,7 +257,7 @@ function buildWorkspaceRow(workspace) {
   actions.appendChild(askButton);
   actions.appendChild(sourcesButton);
 
-  const deleteButton = el("button", "button quiet danger");
+  const deleteButton = el("button", "button quiet danger writes");
   deleteButton.type = "button";
   deleteButton.title = "Delete " + workspace.name;
   deleteButton.setAttribute("aria-label", "Delete " + workspace.name);

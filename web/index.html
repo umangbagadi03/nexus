@@ -52,7 +52,34 @@
         <ul id="recent-list"></ul>
       </div>
 
-      <p class="model-status" id="model-status"><span id="model-status-text"></span></p>
+      <section class="model-panel" aria-label="Model">
+        <button type="button" class="model-status" id="model-toggle" aria-expanded="false" aria-controls="model-form">
+          <span class="model-dot"></span>
+          <span id="model-status-text"></span>
+          <span class="model-change">Change</span>
+        </button>
+
+        <form class="model-form" id="model-form" hidden>
+          <label class="field">
+            Provider
+            <select id="model-provider"></select>
+          </label>
+          <label class="field">
+            Your API key
+            <input id="model-key" type="password" autocomplete="off" spellcheck="false">
+          </label>
+          <label class="field">
+            Model
+            <input id="model-name" autocomplete="off" spellcheck="false">
+            <small>Leave empty for the default</small>
+          </label>
+          <p class="model-note">Kept in this tab only and sent with each question. Never saved on the server.</p>
+          <div class="model-actions">
+            <button class="button" type="submit">Use this key</button>
+            <button class="button quiet" type="button" id="model-forget" hidden>Remove</button>
+          </div>
+        </form>
+      </section>
     </aside>
 
     <main class="main">

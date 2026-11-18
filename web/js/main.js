@@ -1,6 +1,7 @@
 import * as api from "./api.js";
 import { clear, el } from "./dom.js";
 import { fillIcons } from "./icons.js";
+import { setUpModelPanel } from "./model.js";
 import { renderAskPage, showResult } from "./pages/ask.js";
 import { renderEvalsPage } from "./pages/evals.js";
 import { renderHomePage } from "./pages/home.js";
@@ -145,8 +146,9 @@ async function start() {
 
   try {
     state.status = await api.getStatus();
-    document.getElementById("model-status-text").textContent = state.status.model;
-    document.getElementById("model-status").title = "Answers are written by " + state.status.model;
+    setUpModelPanel();
+    // A public demo hides everything that changes data
+    document.body.classList.toggle("read-only", state.status.read_only);
     await reloadWorkspaceList();
   } catch (error) {
     pageContainer.appendChild(el("p", "notice", error.message));

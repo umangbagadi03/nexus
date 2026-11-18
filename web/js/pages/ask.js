@@ -2,6 +2,7 @@ import * as api from "../api.js";
 import { clear, el } from "../dom.js";
 import { kindName } from "../format.js";
 import { renderSidebar } from "../main.js";
+import { openModelForm, ownModel } from "../model.js";
 import { CONNECTOR_INFO } from "./home.js";
 import { rememberAnswer, state } from "../state.js";
 
@@ -15,6 +16,7 @@ let belowBox = null;
 
 export function renderAskPage(container) {
   container.appendChild(buildAskBox());
+  container.appendChild(buildModelHint());
 
   belowBox = el("div");
   container.appendChild(belowBox);
@@ -54,6 +56,20 @@ function buildAskBox() {
   });
 
   return form;
+}
+
+
+// Shown only while no model is connected (the body has the no-model class)
+function buildModelHint() {
+  const hint = el("p", "model-hint");
+  hint.appendChild(document.createTextNode(
+    "No model is connected, so you get the matching sources without a written answer. "));
+  const button = el("button", "link-button", "Add your own API key");
+  button.type = "button";
+  button.addEventListener("click", openModelForm);
+  hint.appendChild(button);
+  hint.appendChild(document.createTextNode(" for answers with citations."));
+  return hint;
 }
 
 
@@ -151,7 +167,11 @@ function buildStart() {
     contentsBlock.appendChild(el("p", "contents-total", "In total: " + kindParts.join(", ") + "."));
   }
 
-  const manage = el("a", "contents-link", "Add or sync sources");
+  let manageText = "Add or sync sources";
+  if (state.status.read_only) {
+    manageText = "See the sources";
+  }
+  const manage = el("a", "contents-link", manageText);
   manage.href = "#/sources";
   contentsBlock.appendChild(manage);
   start.appendChild(contentsBlock);
@@ -174,7 +194,7 @@ async function askQuestion(question) {
 
   try {
     let result = null;
-    await api.askStream(state.workspace.id, question, selectedPipeline(), function (event) {
+    await api.askStream(state.workspace.id, question, selectedPipeline(), ownModel(), function (event) {
       if (event.type === "status") {
         live.statusText.textContent = event.text;
       } else if (event.type === "step") {
@@ -267,18 +287,22 @@ export function showResult(result, animateSteps = true) {
   view.appendChild(el("h2", "result-question", result.question));
 
   const answer = el("article", "answer");
-  const body = el("div", "answer-body");
-  body.innerHTML = DOMPurify.sanitize(marked.parse(result.answer));
-  turnCitationsIntoButtons(body, result.sources.length);
-  answer.appendChild(body);
+  if (result.search_only) {
+    answer.appendChild(buildSearchOnlyNote(result));
+  } else {
+    const body = el("div", "answer-body");
+    body.innerHTML = DOMPurify.sanitize(marked.parse(result.answer));
+    turnCitationsIntoButtons(body, result.sources.length);
+    answer.appendChild(body);
 
-  if (result.check) {
-    answer.appendChild(buildCheck(result.check));
+    if (result.check) {
+      answer.appendChild(buildCheck(result.check));
+    }
+
+    const meta = "Answered by " + result.model + " in " + result.seconds + " seconds, using the " +
+      result.pipeline + " pipeline.";
+    answer.appendChild(el("p", "answer-meta", meta));
   }
-
-  const meta = "Answered by " + result.model + " in " + result.seconds + " seconds, using the " +
-    result.pipeline + " pipeline.";
-  answer.appendChild(el("p", "answer-meta", meta));
   view.appendChild(answer);
 
   const evidence = el("aside", "evidence");
@@ -291,6 +315,32 @@ export function showResult(result, animateSteps = true) {
   view.appendChild(evidence);
 
   belowBox.appendChild(view);
+}
+
+
+// In place of an answer, when no model is connected
+function buildSearchOnlyNote(result) {
+  const note = el("div", "search-only");
+  let found = "Found " + result.sources.length + " matching sources";
+  if (result.sources.length === 1) {
+    found = "Found 1 matching source";
+  }
+  note.appendChild(el("p", "search-only-lead", found + ", best match first."));
+  note.appendChild(el("p", "",
+    "No model is connected, so there is no written answer. With your own API key, Nexus reads these " +
+    "sources, checks them, and writes an answer that cites each one."));
+
+  const button = el("button", "button quiet", "Add your own API key");
+  button.type = "button";
+  button.addEventListener("click", openModelForm);
+  note.appendChild(button);
+
+  let searchName = "hybrid search";
+  if (state.status.light_search) {
+    searchName = "keyword search";
+  }
+  note.appendChild(el("p", "answer-meta", "Searched in " + result.seconds + " seconds with " + searchName + "."));
+  return note;
 }
 
 

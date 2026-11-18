@@ -34,7 +34,13 @@ export function renderSourcesPage(container) {
   container.appendChild(tableHolder);
   renderSourceTable();
 
-  container.appendChild(buildAddSource());
+  container.appendChild(el("p", "read-only-note",
+    "This is a read-only demo, so sources cannot be added or synced here. " +
+    "Run Nexus on your own machine to connect your own files, repositories and issues."));
+
+  const addSource = buildAddSource();
+  addSource.classList.add("writes");
+  container.appendChild(addSource);
 }
 
 
@@ -148,7 +154,7 @@ function buildStatus(source) {
 
 
 function buildActions(source) {
-  const actions = el("div", "source-actions");
+  const actions = el("div", "source-actions writes");
   const busy = source.status === "syncing" || source.status === "queued";
 
   const syncButton = el("button", "button quiet");

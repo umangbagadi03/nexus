@@ -155,7 +155,7 @@ function buildRetrievalBlock(rows, running) {
   block.appendChild(el("p", "eval-note",
     "Checks whether the right documents are found, without calling the LLM. It is free, so run it after every change."));
 
-  const actions = el("div", "eval-actions");
+  const actions = el("div", "eval-actions writes");
   for (const pipeline of ["baseline", "hybrid"]) {
     const button = el("button", "button quiet", "Run " + pipeline);
     button.type = "button";

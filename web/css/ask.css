@@ -530,3 +530,51 @@
     line-height: 28px;
   }
 }
+
+/* No model connected: a hint under the ask box, and a note in place of the answer */
+
+.model-hint {
+  display: none;
+  margin: -8px 0 24px;
+  color: var(--text-3);
+  font-size: 13px;
+}
+
+.no-model .model-hint {
+  display: block;
+}
+
+.link-button {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--accent);
+  font-family: var(--sans);
+  font-size: inherit;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.link-button:hover {
+  text-decoration: underline;
+}
+
+.search-only {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.search-only p {
+  margin: 0;
+  max-width: 60ch;
+  color: var(--text-2);
+}
+
+.search-only .search-only-lead {
+  color: var(--text);
+  font-family: var(--serif);
+  font-size: 18px;
+  line-height: 28px;
+}

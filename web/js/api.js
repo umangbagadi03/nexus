@@ -48,14 +48,22 @@ export function ask(workspaceId, question, pipeline) {
   return request("POST", "/api/workspaces/" + workspaceId + "/ask", { question: question, pipeline: pipeline });
 }
 
-// Calls onEvent for each event the server sends while it works on the answer
-export async function askStream(workspaceId, question, pipeline, onEvent) {
+// Calls onEvent for each event the server sends while it works on the answer.
+// ownModel is the visitor's { provider, api_key, model }, or null to let the server decide.
+export async function askStream(workspaceId, question, pipeline, ownModel, onEvent) {
+  const body = { question: question, pipeline: pipeline };
+  if (ownModel) {
+    body.provider = ownModel.provider;
+    body.api_key = ownModel.api_key;
+    body.model = ownModel.model;
+  }
+
   let response;
   try {
     response = await fetch("/api/workspaces/" + workspaceId + "/ask/stream", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ question: question, pipeline: pipeline }),
+      body: JSON.stringify(body),
     });
   } catch (error) {
     throw new Error("Could not reach the Nexus server. Check that `python main.py serve` is running.");

@@ -10,6 +10,8 @@ const STORAGE_KEY = "nexus-own-model";
 let visitorModel = null;   // { provider, api_key, model } or null
 
 const toggle = document.getElementById("model-toggle");
+const addKeyButton = document.getElementById("add-key");
+const changeLabel = document.querySelector(".model-change");
 const statusText = document.getElementById("model-status-text");
 const form = document.getElementById("model-form");
 const providerSelect = document.getElementById("model-provider");
@@ -85,6 +87,10 @@ function showStatus() {
     toggle.title = "No model is connected, so questions return matching sources only. Click to add your own API key.";
   }
   forgetButton.hidden = !visitorModel;
+
+  // Without a key of their own, the reader sees a clear button to add one
+  addKeyButton.hidden = Boolean(visitorModel);
+  changeLabel.hidden = !visitorModel;
 }
 
 
@@ -122,13 +128,15 @@ export function setUpModelPanel() {
   showDefaultModel();
   showStatus();
 
-  toggle.addEventListener("click", function () {
+  function toggleForm() {
     if (form.hidden) {
       openModelForm();
     } else {
       closeModelForm();
     }
-  });
+  }
+  toggle.addEventListener("click", toggleForm);
+  addKeyButton.addEventListener("click", toggleForm);
 
   providerSelect.addEventListener("change", showDefaultModel);
 

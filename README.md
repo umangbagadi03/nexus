@@ -12,7 +12,19 @@ Since a portfolio project has no company data of its own, it ships with three sa
 - **LangGraph.** An engineering team's knowledge: the LangGraph docs plus 300 recent GitHub issues and pull requests, which link to each other.
 - **Acme Benefits.** One small sample PDF for a fictional company, with tables and a scanned page, to show file uploads.
 
-Everything runs on a laptop. Embeddings, keyword search, the reranker and the vector database run locally. The LLM can be Gemini, Claude, OpenAI or a local Ollama model, chosen by whichever API key is set.
+Everything runs on a laptop. Embeddings, keyword search, the reranker and the vector database run locally. The LLM can be Gemini, Claude, OpenAI or a local Ollama model, chosen by whichever API key is set. People using the web app can also bring their own key in the sidebar, and with no model at all Nexus still returns the matching sources.
+
+## Live demo
+
+[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/umangbagadi03/nexus)
+
+The demo runs on Render's free plan, which has 512 MB of memory. So it is a lighter version than the one on a laptop:
+
+- **Keyword search only.** The embedding model, the reranker and the vector database need about 1 GB, so the demo searches with BM25 alone (`LIGHT_SEARCH=true`). The evaluation results were measured with the full hybrid search.
+- **No API key on the server.** Without a key, a question returns the best matching sources. To get written answers, add your own Gemini, Claude or OpenAI key in the sidebar. It is kept in your browser tab only, sent with each question, and never stored or logged.
+- **Read only.** The demo only answers questions (`READ_ONLY=true`). Adding sources needs a disk that is kept between restarts, which the free plan does not have.
+
+The [`Dockerfile`](Dockerfile) runs the full version, with hybrid search and the demo workspaces already indexed, on any Docker host with about 1 GB of memory.
 
 ## Connecting data
 
@@ -138,11 +150,11 @@ To read PDF tables and scanned pages, also run `pip install -r requirements-docl
 
 Add one API key to `.env`. Gemini's free tier is enough for trying it out, but its daily limits differ a lot by model. On the key used here, `gemini-2.5-flash` allowed 20 requests a day and `gemini-3.5-flash-lite` allowed 500, which is why that is the default. A full eval run needs about 300 requests. With no key, Nexus uses Ollama (`ollama pull llama3.2:3b`).
 
-Then create the sample workspaces. This downloads the data and builds the indexes, which takes a while the first time:
+Then create the sample workspaces. `load-snapshot` unpacks the saved copy in `demo_data/` and builds the search index from it, with no downloads. `setup-demo` fetches everything fresh from GitLab and GitHub instead.
 
 ```bash
-python main.py setup-demo
-python main.py serve        # http://127.0.0.1:8000
+python main.py load-snapshot    # or: python main.py setup-demo
+python main.py serve            # http://127.0.0.1:8000
 ```
 
 ## Commands
@@ -154,6 +166,7 @@ python main.py ask gitlab-handbook "How many vacation days do I get?"
 python main.py eval gitlab-handbook --pipeline hybrid --retrieval-only
 python main.py eval gitlab-handbook --pipeline agentic
 python main.py compare gitlab-handbook
+python main.py save-snapshot                           # pack the workspaces into demo_data/ for a server
 ```
 
 Qdrant runs in local mode, which allows one process at a time to open `data/qdrant`. Stop the web server before running `sync`, `ask` or `eval` from the terminal, or do those from the web app.
@@ -178,14 +191,14 @@ nexus/
   ingestion/                 sync pipeline: fetch, store, index what changed, rebuild links
   indexing/                  chunking, dense and sparse embeddings, Qdrant, incremental indexer
   graph/                     link graph between documents
-  rag/                       retrievers, reranker, prompts, baseline and hybrid pipelines
+  rag/                       retrievers, reranker, light keyword search, prompts, pipelines, search only
   agent/                     LangGraph agent: state, nodes, graph wiring
-  llm/                       one client per provider, picked from the API keys in .env
+  llm/                       one client per provider, from the API keys in .env or a visitor's own key
   evaluation/                eval runner, LLM judge, metrics, comparison table
   api/                       FastAPI routes for workspaces, sources, uploads, push API, evals
 web/                         the web app: HTML, CSS and JavaScript modules, no build step
 evals/<workspace>/           question sets and saved eval runs
-demo_data/                   the sample PDF for the Acme Benefits workspace
+demo_data/                   the sample PDF, and a snapshot of the sample workspaces for servers
 tests/                       unit tests for chunking, links, the judge, the answer check and model routing
 ```
 
@@ -207,3 +220,8 @@ tests/                       unit tests for chunking, links, the judge, the answ
 - The answer check is a weak signal, so "passed" does not mean "true".
 - The LLM judge is noisy and uses the same model as the pipeline. A stronger, separate judge model would be more reliable.
 - Issue states in the reference answers reflect the time the data was fetched.
+- The live demo uses keyword search only, so its results are weaker than the full version's.
+
+## Data
+
+The snapshot in `demo_data/` holds public content, each document with a link back to where it came from: pages of the [GitLab Handbook](https://handbook.gitlab.com) (CC BY-SA 4.0), and the [LangGraph](https://github.com/langchain-ai/langgraph) docs, issues and pull requests on GitHub. The Acme Benefits PDF is made up for this project.

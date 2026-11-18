@@ -1,4 +1,5 @@
 import argparse
+import os
 
 PIPELINE_NAMES = ["baseline", "hybrid", "agentic"]
 
@@ -47,10 +48,11 @@ def sync_command(args):
 
 
 def ask_command(args):
+    from nexus.llm.provider import require_llm
     from nexus.pipelines import get_pipeline
 
     answer_question = get_pipeline(args.pipeline)
-    result = answer_question(args.workspace, args.question)
+    result = answer_question(require_llm(), args.workspace, args.question)
 
     if result["steps"]:
         print()
@@ -90,10 +92,24 @@ def compare_command(args):
     print_comparison(args.workspace, args.mode)
 
 
+def save_snapshot_command(args):
+    from nexus.workspaces.snapshot import save_snapshot
+
+    print("Saved", save_snapshot())
+
+
+def load_snapshot_command(args):
+    from nexus.workspaces.snapshot import load_snapshot
+
+    load_snapshot()
+
+
 def serve_command(args):
     import uvicorn
 
-    uvicorn.run("nexus.api.server:app", host="127.0.0.1", port=args.port)
+    # A hosting service sets HOST and PORT. On your own machine the app is only reachable from it.
+    host = os.getenv("HOST", "127.0.0.1")
+    uvicorn.run("nexus.api.server:app", host=host, port=args.port)
 
 
 def main():
@@ -129,8 +145,14 @@ def main():
     compare_parser.add_argument("--mode", default="full", choices=["full", "retrieval"])
     compare_parser.set_defaults(handler=compare_command)
 
+    save_parser = commands.add_parser("save-snapshot", help="pack the demo workspaces into demo_data, for a server")
+    save_parser.set_defaults(handler=save_snapshot_command)
+
+    load_parser = commands.add_parser("load-snapshot", help="unpack the demo workspaces from demo_data and index them")
+    load_parser.set_defaults(handler=load_snapshot_command)
+
     serve_parser = commands.add_parser("serve", help="start the web app")
-    serve_parser.add_argument("--port", type=int, default=8000)
+    serve_parser.add_argument("--port", type=int, default=int(os.getenv("PORT", "8000")))
     serve_parser.set_defaults(handler=serve_command)
 
     args = parser.parse_args()

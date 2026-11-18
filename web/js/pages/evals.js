@@ -6,7 +6,7 @@ import { state } from "../state.js";
 const PIPELINE_NOTES = {
   baseline: "Small chunks, vector search only",
   hybrid: "Sections, vector + keyword search, reranker",
-  agentic: "Hybrid, plus link graph, grading and retries",
+  agentic: "Hybrid, plus links, grading, retries and an answer check",
 };
 
 let pageHolder = null;
@@ -57,9 +57,26 @@ async function loadAndRender() {
 }
 
 
-function metricCell(value) {
+// The highest value of one metric across all rows, so that cell can be marked
+function bestValue(rows, key) {
+  let best = null;
+  for (const row of rows) {
+    const value = row[key];
+    if (value !== null && value !== undefined && (best === null || value > best)) {
+      best = value;
+    }
+  }
+  return best;
+}
+
+
+function metricCell(rows, row, key) {
+  const value = row[key];
   const cell = el("td");
   const metric = el("div", "metric");
+  if (rows.length > 1 && value !== null && value !== undefined && value === bestValue(rows, key)) {
+    metric.classList.add("best");
+  }
   metric.appendChild(el("span", "metric-value", percent(value)));
 
   const bar = el("div", "metric-bar");
@@ -110,12 +127,12 @@ function buildFullBlock(rows) {
   for (const row of rows) {
     const tableRow = el("tr");
     tableRow.appendChild(pipelineCell(row.pipeline));
-    tableRow.appendChild(metricCell(row.recall));
-    tableRow.appendChild(metricCell(row.accuracy));
-    tableRow.appendChild(metricCell(row.coverage));
-    tableRow.appendChild(metricCell(row.single_hop_accuracy));
-    tableRow.appendChild(metricCell(row.multi_hop_accuracy));
-    tableRow.appendChild(el("td", "", Math.round(row.average_seconds * 10) / 10 + " s"));
+    tableRow.appendChild(metricCell(rows, row, "recall"));
+    tableRow.appendChild(metricCell(rows, row, "accuracy"));
+    tableRow.appendChild(metricCell(rows, row, "coverage"));
+    tableRow.appendChild(metricCell(rows, row, "single_hop_accuracy"));
+    tableRow.appendChild(metricCell(rows, row, "multi_hop_accuracy"));
+    tableRow.appendChild(el("td", "time", Math.round(row.average_seconds * 10) / 10 + " s"));
     table.appendChild(tableRow);
   }
   block.appendChild(table);
@@ -127,7 +144,7 @@ function buildFullBlock(rows) {
     }
   }
   block.appendChild(el("p", "eval-note",
-    "Answers judged against the reference answers by " + models.join(", ") + ". Run again from the terminal with python main.py eval."));
+    "Answers judged against the reference answers by " + models.join(", ") + ". The best value in each column is marked. Run again from the terminal with python main.py eval."));
   return block;
 }
 
@@ -168,8 +185,8 @@ function buildRetrievalBlock(rows, running) {
     for (const row of rows) {
       const tableRow = el("tr");
       tableRow.appendChild(pipelineCell(row.pipeline));
-      tableRow.appendChild(metricCell(row.recall));
-      tableRow.appendChild(el("td", "", row.questions));
+      tableRow.appendChild(metricCell(rows, row, "recall"));
+      tableRow.appendChild(el("td", "time", row.questions));
       table.appendChild(tableRow);
     }
     block.appendChild(table);

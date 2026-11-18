@@ -1,9 +1,16 @@
+.eval-block {
+  margin-bottom: 48px;
+}
+
 .eval-table {
   width: 100%;
-  margin-bottom: 14px;
-  border-collapse: collapse;
+  margin: 12px 0;
   border: 1px solid var(--line);
-  background: var(--panel);
+  border-radius: 12px;
+  border-collapse: separate;
+  border-spacing: 0;
+  overflow: hidden;
+  background: var(--surface);
   font-size: 14px;
 }
 
@@ -16,9 +23,12 @@
 }
 
 .eval-table th {
-  color: var(--muted);
-  font-size: 13px;
+  background: var(--page);
+  color: var(--text-3);
+  font-size: 12px;
   font-weight: 500;
+  line-height: 16px;
+  white-space: nowrap;
 }
 
 .eval-table tr:last-child td {
@@ -26,79 +36,97 @@
 }
 
 .pipeline-name {
-  font-weight: 600;
+  width: 220px;
+  min-width: 200px;
+  font-weight: 500;
 }
 
 .pipeline-name small {
   display: block;
-  color: var(--muted);
-  font-size: 12.5px;
+  margin-top: 4px;
+  color: var(--text-3);
+  font-size: 12px;
   font-weight: 400;
+  line-height: 16px;
 }
 
-/* A number with a bar behind it, so the change between pipelines is visible at a glance */
+.eval-table .time {
+  color: var(--text-2);
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+/* A number with a thin bar under the same scale, so the change between pipelines is visible.
+   Bars are grey. Only the best value in a column takes the accent. */
 .metric {
   display: flex;
   align-items: center;
-  gap: 10px;
-  min-width: 150px;
+  gap: 12px;
+  min-width: 120px;
+}
+
+.metric-value {
+  width: 48px;
+  color: var(--text-2);
+  font-variant-numeric: tabular-nums;
 }
 
 .metric-bar {
   flex: 1;
-  height: 6px;
-  max-width: 110px;
-  border-radius: 3px;
-  background: var(--canvas);
+  max-width: 64px;
+  height: 4px;
+  border-radius: 2px;
+  background: var(--raised);
 }
 
 .metric-bar span {
   display: block;
   height: 100%;
-  border-radius: 3px;
-  background: var(--cobalt);
+  border-radius: 2px;
+  background: var(--faint);
 }
 
-.metric-value {
-  width: 48px;
-  font-weight: 600;
-  font-variant-numeric: tabular-nums;
+.metric.best .metric-value {
+  color: var(--text);
+  font-weight: 500;
 }
 
-.eval-block {
-  margin-bottom: 40px;
+.metric.best .metric-bar span {
+  background: var(--accent);
 }
 
 .eval-note {
-  margin: 0 0 18px;
-  color: var(--muted);
-  font-size: 13.5px;
+  margin: 4px 0 16px;
+  max-width: 72ch;
+  color: var(--text-3);
+  font-size: 13px;
 }
 
 .eval-note code {
-  padding: 2px 6px;
+  padding: 2px 4px;
   border-radius: 4px;
-  background: var(--panel);
-  font-size: 12.5px;
+  background: var(--raised);
+  font-size: 12px;
 }
 
 .eval-actions {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 10px;
-  margin-bottom: 18px;
+  gap: 8px;
+  margin-bottom: 16px;
 }
 
 .eval-running {
   display: flex;
   align-items: center;
   gap: 8px;
-  color: var(--cobalt);
-  font-size: 13.5px;
+  color: var(--text-2);
+  font-size: 13px;
 }
 
-@media (max-width: 760px) {
+/* Wide tables scroll sideways inside their own box on small screens */
+@media (max-width: 1100px) {
   .eval-table {
     display: block;
     overflow-x: auto;

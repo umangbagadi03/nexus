@@ -1,7 +1,8 @@
 /* Design tokens.
    One warm grey ramp for every surface and text, like paper and ink in a library.
    One accent, used rarely: the main action, the selection and the citation marks.
-   Spacing, sizes and radii sit on a 4px grid. */
+   Spacing, sizes and radii sit on a 4px grid.
+   Dark mode swaps the same tokens, so no other file needs to know about it. */
 
 :root {
   --page: #f7f6f3;
@@ -18,10 +19,17 @@
   --accent: #2b4aa8;
   --accent-hover: #223d8f;
   --accent-soft: #e9edf7;
+  --on-accent: #ffffff;
 
   --danger: #b4322b;
   --danger-soft: #fbeceb;
+  --warning: #6f4a14;
+  --warning-soft: #fbf3e6;
   --positive: #3d7a5f;
+
+  --shadow: rgba(29, 27, 24, 0.08);
+  --code-bg: #22201c;
+  --code-text: #ece8e1;
 
   /* One color per kind of source. Only for the small dots that say what a source is. */
   --kind-docs: #3d7a5f;
@@ -35,6 +43,85 @@
   --mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
 
   --ease: cubic-bezier(0.22, 1, 0.36, 1);
+
+  color-scheme: light;
+}
+
+/* Dark: the same paper and ink, at night. Used when the system is dark,
+   unless the reader picked light, or when the reader picked dark. */
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --page: #161513;
+    --surface: #1f1d1a;
+    --sidebar: #1a1917;
+    --raised: #2b2925;
+    --text: #ece9e4;
+    --text-2: #bdb8b0;
+    --text-3: #959089;
+    --faint: #66625b;
+    --line: rgba(236, 233, 228, 0.09);
+    --line-strong: rgba(236, 233, 228, 0.16);
+
+    --accent: #8ea6ee;
+    --accent-hover: #a8bbf3;
+    --accent-soft: rgba(142, 166, 238, 0.14);
+    --on-accent: #111a33;
+
+    --danger: #ee8a82;
+    --danger-soft: rgba(238, 138, 130, 0.12);
+    --warning: #e6be7f;
+    --warning-soft: rgba(230, 190, 127, 0.12);
+    --positive: #74c29c;
+
+    --shadow: rgba(0, 0, 0, 0.4);
+    --code-bg: #0f0e0d;
+    --code-text: #ece8e1;
+
+    --kind-docs: #74c29c;
+    --kind-issue: #e0a35a;
+    --kind-pr: #b49be8;
+    --kind-file: #7fb6d3;
+    --kind-note: #d39f86;
+
+    color-scheme: dark;
+  }
+}
+
+:root[data-theme="dark"] {
+  --page: #161513;
+  --surface: #1f1d1a;
+  --sidebar: #1a1917;
+  --raised: #2b2925;
+  --text: #ece9e4;
+  --text-2: #bdb8b0;
+  --text-3: #959089;
+  --faint: #66625b;
+  --line: rgba(236, 233, 228, 0.09);
+  --line-strong: rgba(236, 233, 228, 0.16);
+
+  --accent: #8ea6ee;
+  --accent-hover: #a8bbf3;
+  --accent-soft: rgba(142, 166, 238, 0.14);
+  --on-accent: #111a33;
+
+  --danger: #ee8a82;
+  --danger-soft: rgba(238, 138, 130, 0.12);
+  --warning: #e6be7f;
+  --warning-soft: rgba(230, 190, 127, 0.12);
+  --positive: #74c29c;
+
+  --shadow: rgba(0, 0, 0, 0.4);
+  --code-bg: #0f0e0d;
+  --code-text: #ece8e1;
+
+  --kind-docs: #74c29c;
+  --kind-issue: #e0a35a;
+  --kind-pr: #b49be8;
+  --kind-file: #7fb6d3;
+  --kind-note: #d39f86;
+
+  color-scheme: dark;
 }
 
 * {
@@ -94,7 +181,7 @@ code {
   border: 0;
   border-radius: 8px;
   background: var(--accent);
-  color: #ffffff;
+  color: var(--on-accent);
   font-family: var(--sans);
   font-size: 14px;
   font-weight: 500;

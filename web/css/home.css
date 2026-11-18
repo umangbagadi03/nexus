@@ -46,7 +46,7 @@
   border: 1px solid var(--line);
   border-radius: 16px;
   background: var(--surface);
-  box-shadow: 0 8px 24px rgba(29, 27, 24, 0.06);
+  box-shadow: 0 8px 24px var(--shadow);
 }
 
 .preview-top {

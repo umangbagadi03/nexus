@@ -239,8 +239,8 @@
   padding: 16px;
   overflow-x: auto;
   border-radius: 8px;
-  background: #22201c;
-  color: #ece8e1;
+  background: var(--code-bg);
+  color: var(--code-text);
   font-family: var(--mono);
   font-size: 13px;
   line-height: 20px;

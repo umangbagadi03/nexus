@@ -83,7 +83,7 @@
 .pipeline-picker label:has(input:checked) {
   background: var(--surface);
   color: var(--text);
-  box-shadow: 0 1px 2px rgba(29, 27, 24, 0.08);
+  box-shadow: 0 1px 2px var(--shadow);
 }
 
 .pipeline-picker label:has(input:focus-visible) {
@@ -308,8 +308,8 @@
   padding: 16px;
   overflow-x: auto;
   border-radius: 8px;
-  background: #22201c;
-  color: #ece8e1;
+  background: var(--code-bg);
+  color: var(--code-text);
   line-height: 20px;
 }
 
@@ -341,8 +341,8 @@
 }
 
 .answer-check.flagged {
-  background: #fbf3e6;
-  color: #6f4a14;
+  background: var(--warning-soft);
+  color: var(--warning);
 }
 
 .answer-check p {

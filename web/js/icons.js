@@ -14,6 +14,7 @@ const PATHS = {
   api: '<path d="M8 8 4 12l4 4M16 8l4 4-4 4M13.5 6l-3 12"/>',
   sync: '<path d="M19 8a7.5 7.5 0 0 0-13-1.5L4 9"/><path d="M4 4v5h5"/><path d="M5 16a7.5 7.5 0 0 0 13 1.5L20 15"/><path d="M20 20v-5h-5"/>',
   remove: '<path d="M5 7h14M10 7V5h4v2M7 7l1 12h8l1-12"/>',
+  arrow: '<path d="M5 12h14M13 6l6 6-6 6"/>',
   key: '<circle cx="8" cy="15" r="4"/><path d="M11 12l8.5-8.5M15.5 7.5l2.5 2.5M13.5 9.5l2 2"/>',
   moon: '<path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/>',
   sun: '<circle cx="12" cy="12" r="4"/><path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.3 5.3l1.4 1.4M17.3 17.3l1.4 1.4M5.3 18.7l1.4-1.4M17.3 6.7l1.4-1.4"/>',

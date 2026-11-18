@@ -1,6 +1,7 @@
 import * as api from "../api.js";
 import { clear, el } from "../dom.js";
 import { kindName } from "../format.js";
+import { icon } from "../icons.js";
 import { renderSidebar } from "../main.js";
 import { openModelForm, ownModel } from "../model.js";
 import { CONNECTOR_INFO } from "./home.js";
@@ -37,9 +38,12 @@ function buildAskBox() {
   const bottom = el("div", "ask-box-bottom");
   bottom.appendChild(buildPipelinePicker());
 
+  const send = el("div", "ask-send");
+  send.appendChild(el("span", "ask-keys", "Enter to ask"));
   askButton = el("button", "button", "Ask");
   askButton.type = "submit";
-  bottom.appendChild(askButton);
+  send.appendChild(askButton);
+  bottom.appendChild(send);
   form.appendChild(bottom);
 
   form.addEventListener("submit", function (event) {
@@ -61,14 +65,19 @@ function buildAskBox() {
 
 // Shown only while no model is connected (the body has the no-model class)
 function buildModelHint() {
-  const hint = el("p", "model-hint");
-  hint.appendChild(document.createTextNode(
-    "No model is connected, so you get the matching sources without a written answer. "));
-  const button = el("button", "link-button", "Add your own API key");
+  const hint = el("div", "model-hint");
+  hint.appendChild(icon("key"));
+
+  const text = el("p");
+  text.appendChild(el("strong", "", "Search only. "));
+  text.appendChild(document.createTextNode(
+    "No model is connected, so you get the matching sources without a written answer."));
+  hint.appendChild(text);
+
+  const button = el("button", "button quiet", "Add your own API key");
   button.type = "button";
   button.addEventListener("click", openModelForm);
   hint.appendChild(button);
-  hint.appendChild(document.createTextNode(" for answers with citations."));
   return hint;
 }
 
@@ -131,8 +140,10 @@ function buildStart() {
   const examples = el("ul", "examples");
   for (const question of workspace.example_questions) {
     const item = el("li");
-    const button = el("button", "", question);
+    const button = el("button");
     button.type = "button";
+    button.appendChild(el("span", "", question));
+    button.appendChild(icon("arrow"));
     button.addEventListener("click", function () {
       questionInput.value = question;
       askQuestion(question);
@@ -143,7 +154,7 @@ function buildStart() {
   examplesBlock.appendChild(examples);
   start.appendChild(examplesBlock);
 
-  const contentsBlock = el("div");
+  const contentsBlock = el("div", "contents-card");
   contentsBlock.appendChild(el("h2", "", "Searching these sources"));
   const contents = el("ul", "contents");
 

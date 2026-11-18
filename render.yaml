@@ -1,0 +1,22 @@
+# One-click deploy on Render (free plan): https://render.com/deploy?repo=https://github.com/umangbagadi03/nexus
+# The free plan has 512 MB of memory, so the live demo skips the ML models and uses BM25 keyword search.
+# No API key is set: visitors bring their own key in the sidebar, or get search results only.
+services:
+  - type: web
+    name: nexus
+    runtime: python
+    plan: free
+    buildCommand: pip install -r requirements-deploy.txt && python main.py load-snapshot
+    startCommand: python main.py serve
+    healthCheckPath: /api/status
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.12.7
+      - key: HOST
+        value: 0.0.0.0
+      - key: LIGHT_SEARCH
+        value: "true"
+      - key: READ_ONLY
+        value: "true"
+      - key: LLM_PROVIDER
+        value: none

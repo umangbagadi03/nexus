@@ -54,8 +54,17 @@ ANSWER_CHECK = os.getenv("ANSWER_CHECK", "true").strip().lower() != "false"
 EMBEDDING_MODEL = "BAAI/bge-small-en-v1.5"
 TOP_K = 5
 
+# LIGHT_SEARCH=true uses keyword search only, with no ML models, for servers with little memory
+# like a free hosting plan. The full hybrid search needs about 1 GB.
+LIGHT_SEARCH = os.getenv("LIGHT_SEARCH", "false").strip().lower() == "true"
+
+# READ_ONLY=true turns off everything that changes data: new workspaces, sources, syncs and evals.
+# For a public demo, where visitors should only ask questions.
+READ_ONLY = os.getenv("READ_ONLY", "false").strip().lower() == "true"
+
 
 # LLM providers. Leave LLM_PROVIDER empty to pick one from whichever API key is set.
+# LLM_PROVIDER=none means the server has no model: visitors bring their own key, or get search results only.
 LLM_PROVIDER = os.getenv("LLM_PROVIDER", "").strip().lower()
 
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY", "")

@@ -1,5 +1,5 @@
-from nexus.indexing import dense_embedder, hybrid_store, sparse_embedder, vector_store
-from nexus.rag.reranker import rerank
+from nexus import config
+from nexus.indexing import hybrid_store
 
 # Children that go into the reranker, and parent sections that come out
 CHILD_CANDIDATES = 30
@@ -29,6 +29,9 @@ def limit_per_document(sections, max_sections):
 
 
 def search_children(workspace_id, query):
+    # Imported here, so the light search runs without these libraries installed
+    from nexus.indexing import dense_embedder, sparse_embedder, vector_store
+
     dense_vector = dense_embedder.embed_query(query)
     sparse_vector = sparse_embedder.embed_query(query)
     collection = vector_store.chunks_collection(workspace_id)
@@ -58,6 +61,13 @@ def lift_to_parents(workspace_id, ranked_children, max_sections):
 
 
 def retrieve_sections(workspace_id, query, max_sections=MAX_SECTIONS):
+    if config.LIGHT_SEARCH:
+        from nexus.rag.keyword_search import search_sections
+        sections = search_sections(workspace_id, query, CHILD_CANDIDATES)
+        return limit_per_document(sections, max_sections)
+
+    from nexus.rag.reranker import rerank
+
     children = search_children(workspace_id, query)
     ranked_children = rerank(query, children)
     return lift_to_parents(workspace_id, ranked_children, max_sections)

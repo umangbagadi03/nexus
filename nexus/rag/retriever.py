@@ -1,9 +1,16 @@
-from nexus.indexing import vector_store
-from nexus.indexing.dense_embedder import embed_query
+from nexus import config
 
 
 def retrieve(workspace_id, question, top_k):
     """Baseline retrieval: the closest small chunks by dense vector only. No keywords, reranker or parent sections."""
+    if config.LIGHT_SEARCH:
+        from nexus.rag.keyword_search import search_sections
+        return search_sections(workspace_id, question, top_k)
+
+    # Imported here, so the light search runs without these libraries installed
+    from nexus.indexing import vector_store
+    from nexus.indexing.dense_embedder import embed_query
+
     query_vector = embed_query(question)
     collection = vector_store.chunks_collection(workspace_id)
     return vector_store.dense_search(collection, query_vector, top_k)

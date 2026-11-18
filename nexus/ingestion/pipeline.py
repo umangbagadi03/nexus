@@ -7,8 +7,9 @@ from nexus import config
 from nexus.connectors.pushed import inbox_file
 from nexus.connectors.registry import make_connector
 from nexus.graph.link_graph import build_graph, forget_graph, save_graph
-from nexus.indexing import hybrid_store, indexer, vector_store
+from nexus.indexing import hybrid_store
 from nexus.ingestion import document_store
+from nexus.rag import keyword_search
 from nexus.workspaces import store
 
 # Syncing uses a lot of CPU and memory for embeddings, so only one runs at a time
@@ -28,6 +29,9 @@ def prepare_documents(source, documents):
 
 
 def rebuild_graph(workspace_id):
+    # The light keyword index is built from the sections, so build it again next time
+    keyword_search.forget_workspace(workspace_id)
+
     graph = build_graph(document_store.load_all_documents(workspace_id))
     save_graph(workspace_id, graph)
     return graph
@@ -40,6 +44,9 @@ def sync_source(workspace_id, source_id):
         store.update_source(workspace_id, source_id, {"status": "syncing", "message": message})
 
     store.update_source(workspace_id, source_id, {"status": "queued", "message": "Waiting for another sync to finish"})
+
+    # Imported here, so a read-only light server runs without the indexing libraries
+    from nexus.indexing import indexer
 
     with _sync_lock:
         source = store.get_source(workspace_id, source_id)
@@ -79,6 +86,8 @@ def sync_source(workspace_id, source_id):
 def delete_workspace(workspace_id):
     """Remove a workspace: its search index, documents, link graph and uploaded files.
     Its eval questions and results in evals/ are kept."""
+    from nexus.indexing import vector_store
+
     with _sync_lock:
         vector_store.drop_collection(vector_store.chunks_collection(workspace_id))
         hybrid_store.forget_workspace(workspace_id)
@@ -109,6 +118,8 @@ def start_sync(workspace_id, source_id):
 
 
 def delete_source(workspace_id, source_id):
+    from nexus.indexing import indexer
+
     with _sync_lock:
         indexer.remove_source(workspace_id, source_id)
         document_store.delete_source_documents(workspace_id, source_id)
